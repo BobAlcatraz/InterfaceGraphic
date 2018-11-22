@@ -1,0 +1,4 @@
+Max : IDessin, Dessin, IObserver, Observer
+Jo : IEnregistrement, Enregistrement, IExportable, Exportable
+Phil : IEspaceTravail, EspaceTravail
+Nat + Mari : IForme, Forme, Ligne, Oval, Rectangle
