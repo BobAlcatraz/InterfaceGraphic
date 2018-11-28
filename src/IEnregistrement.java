@@ -3,6 +3,6 @@
  *
  */
 public interface IEnregistrement {
-	public void Enregitrer(IEspaceTravail p_EspaceAEnregistre);
+	public void Enregistrer(IEspaceTravail p_EspaceAEnregistrer);
 	public IEspaceTravail Charger();
 }
