@@ -10,13 +10,13 @@ abstract class Forme implements IForme {
 	private Color m_Couleur;	
 	private Color m_Remplissage;
 	
-	protected abstract void setX();
-	protected abstract void setY();
-	protected abstract void setHauteur();
-	protected abstract void setLargeur();
-	protected abstract void setTrait();
-	protected abstract void setCouleur();
-	protected abstract void setRemplissage();
+	protected abstract void setX(int p_X);
+	protected abstract void setY(int p_Y);
+	protected abstract void setHauteur(int p_Hauteur);
+	protected abstract void setLargeur(int p_Largeur);
+	protected abstract void setTrait(int p_Trait);
+	protected abstract void setCouleur(Color p_Couleur);
+	protected abstract void setRemplissage(Color p_Couleur);
 	
 	
 	
