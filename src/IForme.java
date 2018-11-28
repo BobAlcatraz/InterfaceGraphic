@@ -13,7 +13,9 @@ public interface IForme extends Comparable<IForme>{
 	public int GetHauteur();
 	public int GetLarger();
 	public int GetTrait();
-	public Color GetColor();
+
+	public Color GetCouleur();
+
 	public Color GetRemplissage();
 	
 	
