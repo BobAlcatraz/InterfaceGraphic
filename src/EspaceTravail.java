@@ -1,16 +1,13 @@
-package ca.csf.dfc.donnees.tp.model;
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
-
-import ca.csf.dfc.donnees.tp.controller.IForme;
 
 public class EspaceTravail extends JPanel implements IEspaceTravail  {
 
@@ -20,6 +17,10 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	public EspaceTravail(int p_x, int p_y) {
 		super();
 		this.setSize(p_x,p_y);
+		this.addMouseListener(new ActionClickSouris());
+		this.addMouseMotionListener(new ActionDragSouris());
+		
+		
 	}
 	
 	@Override
@@ -73,14 +74,69 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		
 	}
 
+	
+	
+	private class ActionDragSouris implements MouseMotionListener{
 
-	@Override
-	public void ajouterMouseMotionListener(MouseMotionListener p_MML) {
-		this.addMouseMotionListener(p_MML);
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			if() {
+				
+			}
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+
+	private class ActionClickSouris implements MouseListener{
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if(e.get)
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 
 	@Override
-	public void ajouterMouseListener(MouseListener p_ML) {
-		this.addMouseListener(p_ML);
+	public int compareTo(IEspaceTravail o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
+
+	@Override
+	public Iterator<IEspaceTravail> iterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
