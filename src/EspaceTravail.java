@@ -1,16 +1,18 @@
+import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
 
 public class EspaceTravail extends JPanel implements IEspaceTravail  {
 
 	private ArrayList<IForme> m_ListForme;
-	private IForme m_IformeSelect;
+	private Graphics2D m_Dessin;
 	
 	public EspaceTravail(int p_x, int p_y) {
 		super();
@@ -41,7 +43,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 
 	@Override
 	public void draw(IForme p_forme) {
-		this.m_ListForme.add(p_forme)
+		this.m_ListForme.add(p_forme);
 		this.repaint();
 	}
 	@Override
@@ -50,7 +52,23 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		for (IForme forme : this.m_ListForme) {
 			String sorteForme = forme.GetForme();
 			switch(sorteForme) {
-			case "rectangle"
+			case "rectangle" :
+				graph.setColor(forme.GetCouleur());
+				graph.setStroke(new BasicStroke(forme.GetTrait()));
+				graph.drawRect(forme.GetX(), forme.GetY(), forme.GetLarger(), forme.GetHauteur());
+				break;
+			case "oval" :
+				graph.setColor(forme.GetCouleur());
+				graph.setStroke(new BasicStroke(forme.GetTrait()));
+				graph.drawOval(forme.GetX(),forme.GetY(), forme.GetLarger(), forme.GetHauteur());
+				break;
+			case "ligne" :
+				int pointx2 = forme.GetX() + forme.GetLarger();
+				int pointy2 = forme.GetY() + forme.GetHauteur();
+				graph.setColor(forme.GetCouleur());
+				graph.setStroke(new BasicStroke(forme.GetTrait()));
+				graph.drawLine(forme.GetX(), forme.GetY(), pointx2, pointy2);
+				break;
 			}
 		}
 		
@@ -62,7 +80,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			if(e.getComponent() != null) {
+			if() {
 				
 			}
 			
@@ -80,8 +98,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			EspaceTravail.this.m_IformeSelect = (IForme)e.getComponent();
-			
+			if(e.get)
 		}
 
 		@Override
@@ -108,6 +125,18 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 			
 		}
 		
+	}
+
+	@Override
+	public int compareTo(IEspaceTravail o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Iterator<IEspaceTravail> iterator() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
