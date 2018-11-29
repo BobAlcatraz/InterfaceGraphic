@@ -43,14 +43,18 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	
 		boolean trouve = false;
 		for(int i = this.m_ListForme.size()-1; i >= 0; i--) {
-			if(this.m_ListForme.get(i).GetX() == p_x && this.m_ListForme.get(i).GetY() == p_y && trouve == false) {
+			if(this.m_ListForme.get(i).isclicked(p_x, p_y) && trouve == false) {
 				this.m_selectionne = this.m_ListForme.get(i);
 				this.m_ListForme.add(this.m_selectionne);
 				trouve = true;
 			}
 		}
+		this.repaint();
 	}
 	
+	public void modifierForme(int p_x, int p_y, boolean p_fini) {
+		
+	}
 	
 	@Override
 	public void draw(IForme p_forme) {
@@ -176,6 +180,12 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	public int getHauteur() {
 		
 		return this.getHeight();
+	}
+	public boolean hasSelection() {
+		return this.m_selectionne != null;
+	}
+	public boolean dansSelection(int p_x, int p_y) {
+		return this.m_selectionne.isclicked(p_x,p_y);
 	}
 	
 }

@@ -3,7 +3,7 @@ package ca.csf.dfc.donnees.tp.controller;
 import java.awt.*;
 
 public interface IForme extends Comparable<IForme>{
-	public Boolean isclicked();	
+	public Boolean isclicked(int x, int y);	
 	public void Deplacer(int x, int y);
 	public void Modifier(int p_Largeur, int p_Hauteur);
 	public String GetForme();
