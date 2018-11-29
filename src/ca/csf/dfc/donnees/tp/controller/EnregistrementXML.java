@@ -1,18 +1,12 @@
 package ca.csf.dfc.donnees.tp.controller;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-
+import java.awt.Color;
+import java.io.*;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.*;
 
 import ca.csf.dfc.donnees.tp.model.*;
 
@@ -49,16 +43,12 @@ public class EnregistrementXML implements IEnregistrement {
 		
 	}
 	
-	public void Charger(IEspaceTravail p_EspaceActuelmodifie) {
-		
-		EspaceTravail espaceTravail = null;
-		int largeurEspace = 0;
-		int hauteurEspace = 0;	
+	public void Charger(IEspaceTravail p_EspaceActuelEcrase) {	
+		XMLStreamReader doc = null;
 		List<Forme> listeFormes = new ArrayList<Forme>();
 		
-		
 		try { 
-			XMLStreamReader doc = null;
+			
 			FileReader input = creationReaderParJFileChooser();
 			doc = XMLInputFactory.newInstance().createXMLStreamReader(input);
 			
@@ -70,13 +60,10 @@ public class EnregistrementXML implements IEnregistrement {
 				throw new XMLStreamException("Oups, ce n'est pas le bon élément racine: " + doc.getLocalName());
 			}
 			
-			doc.next();
 			
-			//Chargement des formes
-			while (doc.isStartElement() && doc.getLocalName().equals(ELM_FORME))
-	        {
-	            chargerFormeDansListe(doc, listeFormes);
-	        }
+			chargerDimensionEspace(doc, p_EspaceActuelEcrase);
+	        chargerFormesDansEspace(doc, p_EspaceActuelEcrase);
+	     
 			
 		}
 		catch(XMLStreamException exp) {
@@ -85,8 +72,24 @@ public class EnregistrementXML implements IEnregistrement {
 		catch(FileNotFoundException exp) {
 			System.err.println("Erreur lors de la sélection du document:" + exp);
 		}
+		catch(NumberFormatException exp) {
+			System.err.println("Erreur lors du chargement d'un attribut en int:" + exp);
+		}
+		finally {
+			if (doc != null)
+            {
+                try
+                {
+                    doc.close();
+                }
+                catch (XMLStreamException exp)
+                {
+                    System.err.println("Erreur lors de la fermeture" + exp);
+                }
+                doc = null;
+            }
+		}
 	}
-	
 	
 	private FileReader creationReaderParJFileChooser() throws FileNotFoundException {
 		FileReader fileReader = null;
@@ -103,47 +106,53 @@ public class EnregistrementXML implements IEnregistrement {
 		return fileReader;
 	}
 	
-	private void chargerFormeDansListe(XMLStreamReader p_doc, List<Forme> p_listeFormes) { // Test par String, a changer pour ADD.
-		
-		try 
-		{
-		Forme formeAjoute;	
+	private void chargerDimensionEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws XMLStreamException, NumberFormatException 
+	{
+		int largeur = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_LARGEUR_ESP));
+		int hauteur = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_HAUTEUR_ESP));
 			
-		String typeForme      =                  p_doc.getAttributeValue("", ATTR_TYPE);
-		int coorX             = Integer.parseInt(p_doc.getAttributeValue("", ATTR_COOR_X));
-		int coorY             = Integer.parseInt(p_doc.getAttributeValue("", ATTR_COOR_Y));
-		int hauteur           = Integer.parseInt(p_doc.getAttributeValue("", ATTR_HAUTEUR_FORME));
-		int largeur           = Integer.parseInt(p_doc.getAttributeValue("", ATTR_LARGEUR_FORME));
-		int trait = Integer.parseInt(p_doc.getAttributeValue("", ATTR_EPAISSEUR_CONTOUR));
-		int numCouleurContour = Integer.parseInt(p_doc.getAttributeValue("", ATTR_COULEUR_CONTOUR));
-		int numCouleurFond    = Integer.parseInt(p_doc.getAttributeValue("", ATTR_COULEUR_FOND));
-		
-		Color couleurContour = new Color(numCouleurContour);
-		Color couleurFond    = new Color(numCouleurFond);
-		
-		switch(typeForme){
-			case FORME_TYPE_LIGNE:
-				formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurContour, couleurFond);
-				break;
-			case FORME_TYPE_OVALE:
-				formeAjoute = new Ovale(coorX, coorY, hauteur, largeur, trait, couleurContour, couleurFond);
-				break;
-			case FORME_TYPE_RECTANGLE:
-				formeAjoute = new Rectangle(coorX, coorY, hauteur, largeur, trait, couleurContour, couleurFond);
-				break;
-		}
-	
-		p_listeFormes.add(formeAjoute);
-		
-		}
-		catch(NumberFormatException exp) {
-			System.err.println("Tentative de conversion en Int écouchée :" + exp);
-		}
-		catch(Exception exp) {
-			System.err.println("Tentative de chargement d'une forme échouée :" + exp);
-		}
-		
-
+		p_EspaceTravail.setTaille(largeur, hauteur);
+		p_Doc.next();
 	}
 	
+	private void chargerFormesDansEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws NumberFormatException { // Test par String, a changer pour ADD.
+		
+		while (p_Doc.isStartElement() && p_Doc.getLocalName().equals(ELM_FORME))
+        {
+			Forme formeAjoute;	
+			
+			String typeForme      =                  p_Doc.getAttributeValue("", ATTR_TYPE);
+			int coorX             = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COOR_X));
+			int coorY             = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COOR_Y));
+			int hauteur           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_HAUTEUR_FORME));
+			int largeur           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_LARGEUR_FORME));
+			int trait = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_EPAISSEUR_CONTOUR));
+			int numCouleurContour = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COULEUR_CONTOUR));
+			int numCouleurFond    = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COULEUR_FOND));
+		
+			Color couleurContour = new Color(numCouleurContour);
+			Color couleurFond    = new Color(numCouleurFond);
+		
+			switch(typeForme){
+				case FORME_TYPE_LIGNE:
+					formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurContour, couleurFond);
+					break;
+				case FORME_TYPE_OVALE:
+					formeAjoute = new Ovale(coorX, coorY, hauteur, largeur, trait, couleurContour, couleurFond);
+					break;
+				case FORME_TYPE_RECTANGLE:
+					formeAjoute = new Rectangle(coorX, coorY, hauteur, largeur, trait, couleurContour, couleurFond);
+					break;
+			}
+			
+			if(formeAjoute != null)
+			{
+				p_EspaceTravail.draw(formeAjoute);
+			}
+			
+			p_Doc.next();
+		}
+		
+	}
+
 }
