@@ -1,4 +1,5 @@
 package ca.csf.dfc.donnees.tp.model;
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -16,6 +17,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	public EspaceTravail(int p_x, int p_y) {
 		super();
 		this.setSize(p_x,p_y);
+		this.setBackground(Color.WHITE);
 	}
 	
 	@Override
@@ -40,56 +42,19 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 				
 	}
 
-	
-	
-	private class ActionDragSouris implements MouseMotionListener{
 
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			
-			
-		}
-
-		@Override
-		public void mouseMoved(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+	@Override
+	public void ajouterMouseMotionListener(MouseMotionListener p_MML) {
+		this.addMouseMotionListener(p_MML);
 		
 	}
 
-	private class ActionClickSouris implements MouseListener{
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+	@Override
+	public void ajouterMouseListener(MouseListener p_ML) {
+		this.addMouseListener(p_ML);
 		
 	}
+	
+	
 
 }
