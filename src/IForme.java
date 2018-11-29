@@ -3,15 +3,15 @@ import java.awt.*;
 public interface IForme extends Comparable<IForme>{
 
 	
-	public Boolean isclicked();	
-	public void Deplacer(int x, int y);
+	public Boolean isclicked(int p_X, int p_Y);	
+	public void Deplacer(int p_X, int p_Y);
 	public void Modifier(int p_Largeur, int p_Hauteur);
 	public String GetForme();
 	
 	public int GetX();
 	public int GetY();
 	public int GetHauteur();
-	public int GetLarger();
+	public int GetLargeur();
 	public int GetTrait();
 	public Color GetCouleur();
 	public Color GetRemplissage();
