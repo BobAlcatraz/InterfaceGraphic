@@ -7,5 +7,5 @@ import ca.csf.dfc.donnees.tp.model.*;
  */
 public interface IEnregistrement {
 	public void Enregistrer(IEspaceTravail p_EspaceAEnregistrer);
-	public EspaceTravail Charger();
+	public void Charger(IEspaceTravail p_EspaceActuelModifie);
 }
