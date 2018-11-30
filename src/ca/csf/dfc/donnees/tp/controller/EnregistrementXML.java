@@ -32,7 +32,7 @@ public class EnregistrementXML implements IEnregistrement {
     private final static String ATTR_LARGEUR_FORME     = "flargeur";
     private final static String ATTR_EPAISSEUR_TRAIT = "epaisseur";
     private final static String ATTR_COULEUR_CONTOUR   = "coulcontour";
-    private final static String ATTR_COULEUR_FOND      = "coulfond";
+    private final static String ATTR_COULEUR_REMPLISSAGE      = "coulfond";
     
     
 	// ENREGISTREMENT
@@ -42,23 +42,26 @@ public class EnregistrementXML implements IEnregistrement {
 
         try
         {
-        	// ** fonction avec Repertoire chooser.
-            FileWriter output = new FileWriter(new File("data.xml"));
+        	String largeurEspace = Integer.toString(p_EspaceAEnregistrer.getLargeur());
+        	String hauteurEspace = Integer.toString(p_EspaceAEnregistrer.getHauteur());
+        	
+
+            FileWriter output = creationFileWriterParJFileChooser();
 
             doc = XMLOutputFactory.newInstance().createXMLStreamWriter(output);
 
             // <?xml version="1.0" ?>
             doc.writeStartDocument();
-
-            doc.writeStartElement(ELM_ESPACE_TRAVAIL);
-            doc.writeAttribute(ATTR_LARGEUR_ESP, p_EspaceAEnregistrer.getLargeur());
-            doc.writeAttribute(ATTR_HAUTEUR_ESP, p_EspaceAEnregistrer.getHauteur());
+            // <espacetravail largeur= hauteur=>
+            doc.writeStartElement( ELM_ESPACE_TRAVAIL );
+            	doc.writeAttribute( ATTR_LARGEUR_ESP, largeurEspace );
+            	doc.writeAttribute( ATTR_HAUTEUR_ESP, hauteurEspace );
 
             // Écriture des formes...
             enregistrementFormes(doc, p_EspaceAEnregistrer);
-
-            doc.writeEndElement();
             
+            // </espacetravail>
+            doc.writeEndElement();
             doc.writeEndDocument();
 
         }
@@ -74,39 +77,63 @@ public class EnregistrementXML implements IEnregistrement {
         }
         finally
         {
-            // Ici, on va tenter de fermer le fichier.
-
             if (doc != null)
             {
                 try
                 {
-                    doc.flush(); // Pour terminer l'ecriture.
+                    doc.flush(); 
                     doc.close();
 
                 }
                 catch (XMLStreamException exp)
                 {
-                    // Oups, un problème durant la fermeture ..
                     System.err.println("Erreur lors de la fermeture" + exp);
-
                 }
                 doc = null;
             }
         }
 	}
     
-    private void enregistrementFormes(XMLStreamWriter p_Doc, IEspaceTravail p_EspaceAEnregistrer) {
-    	for(Forme forme: p_EspaceAEnregistrer.getListeFormes()) {
-    		p_Doc.writeStartElement(ELM_FORME);
+    private FileWriter creationFileWriterParJFileChooser() throws IOException {
+    	FileWriter fileWriter = null;
+    	
+    	JFileChooser chooser = new JFileChooser();
+    		chooser.setCurrentDirectory(new File("/home/%username%/Documents"));
+    		FileNameExtensionFilter filtre = new FileNameExtensionFilter("xml");
+    		chooser.setFileFilter(filtre);
     		
-        	p_Doc.writeAttribute(ATTR_TYPE, forme.GetForme());
-    		p_Doc.writeAttribute(ATTR_COOR_X, forme.GetX());  // toString();
-        	p_Doc.writeAttribute(ATTR_COOR_Y, forme.GetY());
-        	p_Doc.writeAttribute(ATTR_HAUTEUR_FORME, forme.GetHauteur());
-        	p_Doc.writeAttribute(ATTR_LARGEUR_FORME, forme.GetLarger());
-        	p_Doc.writeAttribute(ATTR_EPAISSEUR_TRAIT, forme.GetTrait());
-        	p_Doc.writeAttribute(ATTR_COULEUR_CONTOUR, forme.GetCouleur());
-        	p_Doc.writeAttribute(ATTR_COULEUR_FOND, forme.GetRemplissage());
+    	int valRetournee = chooser.showSaveDialog(null);
+    	
+    	if (valRetournee == JFileChooser.APPROVE_OPTION) 
+    	{
+    	     fileWriter = new FileWriter(chooser.getSelectedFile() + ".xml");
+    	}
+    	
+    	return fileWriter;
+    }
+    
+    private void enregistrementFormes(XMLStreamWriter p_Doc, IEspaceTravail p_EspaceAEnregistrer) {
+    	for(Forme forme: p_EspaceAEnregistrer.getListeFormes()) 
+    	{
+    		String coorX              = Integer.toString(forme.GetX());
+    		String coorY              = Integer.toString(forme.GetY());
+    		String hauteurForme       = Integer.toString(forme.GetHauteur());
+    		String largeurForme       = Integer.toString(forme.GetLarger());
+    		String epaisseurTrait     = Integer.toString(forme.GetTrait());
+    		String couleurContour     = forme.GetCouleur().toString();
+    		String couleurRemplissage = forme.GetRemplissage().toString();
+    		
+    		
+    		p_Doc.writeStartElement(ELM_FORME);
+    		 
+        	p_Doc.writeAttribute( ATTR_TYPE,                forme.GetForme()      );
+    		p_Doc.writeAttribute( ATTR_COOR_X,              coorX                 ); 
+        	p_Doc.writeAttribute( ATTR_COOR_Y,              coorY                 );
+        	p_Doc.writeAttribute( ATTR_LARGEUR_FORME,       largeurForme          );
+        	p_Doc.writeAttribute( ATTR_HAUTEUR_FORME,       hauteurForme          );
+        	p_Doc.writeAttribute( ATTR_EPAISSEUR_TRAIT,     epaisseurTrait        );
+        	p_Doc.writeAttribute( ATTR_COULEUR_CONTOUR,     couleurContour        );
+        	p_Doc.writeAttribute( ATTR_COULEUR_REMPLISSAGE, couleurRemplissage    );
         	
         	p_Doc.writeEndElement();
     	}
@@ -116,11 +143,10 @@ public class EnregistrementXML implements IEnregistrement {
 	// CHARGEMENT
 	public void Charger(IEspaceTravail p_EspaceActuelEcrase) {	
 		XMLStreamReader doc = null;
-		List<Forme> listeFormes = new ArrayList<Forme>();
 		
 		try { 
 			
-			FileReader input = creationReaderParJFileChooser();
+			FileReader input = creationFileReaderParJFileChooser();
 			doc = XMLInputFactory.newInstance().createXMLStreamReader(input);
 			
 			doc.next();
@@ -131,10 +157,8 @@ public class EnregistrementXML implements IEnregistrement {
 				throw new XMLStreamException("Oups, ce n'est pas le bon élément racine: " + doc.getLocalName());
 			}
 			
-			
 			chargerDimensionEspace(doc, p_EspaceActuelEcrase);
 	        chargerFormesDansEspace(doc, p_EspaceActuelEcrase);
-	     
 			
 		}
 		catch(XMLStreamException exp) {
@@ -162,7 +186,7 @@ public class EnregistrementXML implements IEnregistrement {
 		}
 	}
 	
-	private FileReader creationReaderParJFileChooser() throws FileNotFoundException {
+	private FileReader creationFileReaderParJFileChooser() throws FileNotFoundException {
 		FileReader fileReader = null;
 		
 		JFileChooser chooser = new JFileChooser();
@@ -197,9 +221,9 @@ public class EnregistrementXML implements IEnregistrement {
 			int coorY             = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COOR_Y));
 			int hauteur           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_HAUTEUR_FORME));
 			int largeur           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_LARGEUR_FORME));
-			int trait = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_TRAIT));
+			int trait             = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_EPAISSEUR_TRAIT));
 			int numCouleurContour = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COULEUR_CONTOUR));
-			int numCouleurFond    = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COULEUR_FOND));
+			int numCouleurFond    = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COULEUR_REMPLISSAGE));
 		
 			Color couleurContour = new Color(numCouleurContour);
 			Color couleurFond    = new Color(numCouleurFond);
