@@ -13,6 +13,17 @@ import ca.csf.dfc.donnees.tp.model.*;
 /**
  * @author JBrazeau
  *
+ *Notes: IEspace de travail : listeFormes
+ * J'ai besoin d'avoir accès à la liste des formes:
+ *    .getListeFormes() 
+ *    
+ *Notes: .getForme() static?
+ *    static finale string TYPE_FORME 
+ *Me permetterait d'éviter un instanceOf 
+ *Je sais pas si c'est pertinent
+ *Ça pourrait être utile, puisque c'est une valeur finale
+ *Et qu'elle permetterait de recuillir la valeur du type sans instancier d'objet.
+ *
  */
 public class EnregistrementXML implements IEnregistrement {
 	
@@ -25,14 +36,14 @@ public class EnregistrementXML implements IEnregistrement {
     private final static String ATTR_LARGEUR_ESP = "elargeur";
     
     //Attributs élément: ELM_FORME
-    private final static String ATTR_TYPE              = "type";
-    private final static String ATTR_COOR_X            = "coorx";
-    private final static String ATTR_COOR_Y            = "coory"; 
-    private final static String ATTR_HAUTEUR_FORME     = "fhauteur";
-    private final static String ATTR_LARGEUR_FORME     = "flargeur";
-    private final static String ATTR_EPAISSEUR_TRAIT = "epaisseur";
-    private final static String ATTR_COULEUR_CONTOUR   = "coulcontour";
-    private final static String ATTR_COULEUR_REMPLISSAGE      = "coulfond";
+    private final static String ATTR_TYPE                = "type";
+    private final static String ATTR_COOR_X              = "coorx";
+    private final static String ATTR_COOR_Y              = "coory"; 
+    private final static String ATTR_HAUTEUR_FORME       = "fhauteur";
+    private final static String ATTR_LARGEUR_FORME       = "flargeur";
+    private final static String ATTR_EPAISSEUR_TRAIT     = "epaisseurtrait";
+    private final static String ATTR_COULEUR_TRAIT       = "coultrait";
+    private final static String ATTR_COULEUR_REMPLISSAGE = "coulremplissage";
     
     
 	// ENREGISTREMENT
@@ -46,7 +57,7 @@ public class EnregistrementXML implements IEnregistrement {
         	String hauteurEspace = Integer.toString(p_EspaceAEnregistrer.getHauteur());
         	
 
-            FileWriter output = creationFileWriterParJFileChooser();
+            FileWriter output = creationFileWriterXMLParJFileChooser();
 
             doc = XMLOutputFactory.newInstance().createXMLStreamWriter(output);
 
@@ -94,19 +105,24 @@ public class EnregistrementXML implements IEnregistrement {
         }
 	}
     
-    private FileWriter creationFileWriterParJFileChooser() throws IOException {
+    private FileWriter creationFileWriterXMLParJFileChooser() throws IOException {
     	FileWriter fileWriter = null;
     	
     	JFileChooser chooser = new JFileChooser();
     		chooser.setCurrentDirectory(new File("/home/%username%/Documents"));
-    		FileNameExtensionFilter filtre = new FileNameExtensionFilter("xml");
+    		FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichiers xml (*.xml)","xml");
     		chooser.setFileFilter(filtre);
     		
     	int valRetournee = chooser.showSaveDialog(null);
     	
     	if (valRetournee == JFileChooser.APPROVE_OPTION) 
-    	{
-    	     fileWriter = new FileWriter(chooser.getSelectedFile() + ".xml");
+    	{	
+    		String nomFichier = chooser.getSelectedFile().toString();
+    		if(!nomFichier.endsWith(".xml")) {
+    			nomFichier += ".xml";
+    		}
+    	    
+    		fileWriter = new FileWriter(nomFichier);
     	}
     	
     	return fileWriter;
@@ -115,25 +131,25 @@ public class EnregistrementXML implements IEnregistrement {
     private void enregistrementFormes(XMLStreamWriter p_Doc, IEspaceTravail p_EspaceAEnregistrer) {
     	for(Forme forme: p_EspaceAEnregistrer.getListeFormes()) 
     	{
-    		String coorX              = Integer.toString(forme.GetX());
-    		String coorY              = Integer.toString(forme.GetY());
-    		String hauteurForme       = Integer.toString(forme.GetHauteur());
-    		String largeurForme       = Integer.toString(forme.GetLarger());
-    		String epaisseurTrait     = Integer.toString(forme.GetTrait());
-    		String couleurContour     = forme.GetCouleur().toString();
-    		String couleurRemplissage = forme.GetRemplissage().toString();
+    		Integer coorX                 = forme.GetX();
+    		Integer coorY                 = forme.GetY();
+    		Integer hauteurForme          = forme.GetHauteur();
+    		Integer largeurForme          = forme.GetLarger();
+    		Integer epaisseurTrait        = forme.GetTrait();
+    		Integer couleurRGBContour     = forme.GetCouleur().getRGB();
+    		Integer couleurRGBRemplissage = forme.GetRemplissage().getRGB();
     		
     		
     		p_Doc.writeStartElement(ELM_FORME);
     		 
-        	p_Doc.writeAttribute( ATTR_TYPE,                forme.GetForme()      );
-    		p_Doc.writeAttribute( ATTR_COOR_X,              coorX                 ); 
-        	p_Doc.writeAttribute( ATTR_COOR_Y,              coorY                 );
-        	p_Doc.writeAttribute( ATTR_LARGEUR_FORME,       largeurForme          );
-        	p_Doc.writeAttribute( ATTR_HAUTEUR_FORME,       hauteurForme          );
-        	p_Doc.writeAttribute( ATTR_EPAISSEUR_TRAIT,     epaisseurTrait        );
-        	p_Doc.writeAttribute( ATTR_COULEUR_CONTOUR,     couleurContour        );
-        	p_Doc.writeAttribute( ATTR_COULEUR_REMPLISSAGE, couleurRemplissage    );
+        	p_Doc.writeAttribute( ATTR_TYPE,                forme.GetForme()                 );
+    		p_Doc.writeAttribute( ATTR_COOR_X,              coorX.toString()                 ); 
+        	p_Doc.writeAttribute( ATTR_COOR_Y,              coorY.toString()                 );
+        	p_Doc.writeAttribute( ATTR_LARGEUR_FORME,       largeurForme.toString()          );
+        	p_Doc.writeAttribute( ATTR_HAUTEUR_FORME,       hauteurForme.toString()          );
+        	p_Doc.writeAttribute( ATTR_EPAISSEUR_TRAIT,     epaisseurTrait.toString()        );
+        	p_Doc.writeAttribute( ATTR_COULEUR_TRAIT,     couleurRGBContour.toString()     );
+        	p_Doc.writeAttribute( ATTR_COULEUR_REMPLISSAGE, couleurRGBRemplissage.toString() );
         	
         	p_Doc.writeEndElement();
     	}
@@ -146,7 +162,7 @@ public class EnregistrementXML implements IEnregistrement {
 		
 		try { 
 			
-			FileReader input = creationFileReaderParJFileChooser();
+			FileReader input = creationFileReaderXMLParJFileChooser();
 			doc = XMLInputFactory.newInstance().createXMLStreamReader(input);
 			
 			doc.next();
@@ -186,16 +202,18 @@ public class EnregistrementXML implements IEnregistrement {
 		}
 	}
 	
-	private FileReader creationFileReaderParJFileChooser() throws FileNotFoundException {
+	private FileReader creationFileReaderXMLParJFileChooser() throws FileNotFoundException {
 		FileReader fileReader = null;
 		
 		JFileChooser chooser = new JFileChooser();
-		FileNameExtensionFilter filtre = new FileNameExtensionFilter("xml");
+		FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichiers xml (*.xml)","xml");
 		    chooser.setFileFilter(filtre);
-		    int valRetournee = chooser.showOpenDialog(chooser.getParent());
+		/*  chooser.setCurrentDirectory(new File("/home/%username%/Documents"));
+		 int valRetournee = chooser.showOpenDialog(null); */
+		 int valRetournee = chooser.showOpenDialog(chooser.getParent());
 		
 		if(valRetournee == JFileChooser.APPROVE_OPTION) {
-			fileReader = new FileReader(new File(chooser.getSelectedFile().getPath()));
+			fileReader = new FileReader(chooser.getSelectedFile());
 		 }
 		
 		return fileReader;
@@ -203,8 +221,8 @@ public class EnregistrementXML implements IEnregistrement {
 	
 	private void chargerDimensionEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws XMLStreamException, NumberFormatException 
 	{
-		int largeur = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_LARGEUR_ESP));
-		int hauteur = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_HAUTEUR_ESP));
+		Integer largeur = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_LARGEUR_ESP));
+		Integer hauteur = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_HAUTEUR_ESP));
 			
 		p_EspaceTravail.setTaille(largeur, hauteur);
 		p_Doc.next();
@@ -216,27 +234,27 @@ public class EnregistrementXML implements IEnregistrement {
         {
 			Forme formeAjoute;	
 			
-			String typeForme      =                  p_Doc.getAttributeValue("", ATTR_TYPE);
-			int coorX             = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COOR_X));
-			int coorY             = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COOR_Y));
-			int hauteur           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_HAUTEUR_FORME));
-			int largeur           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_LARGEUR_FORME));
-			int trait             = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_EPAISSEUR_TRAIT));
-			int numCouleurContour = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COULEUR_CONTOUR));
-			int numCouleurFond    = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COULEUR_REMPLISSAGE));
+			String typeForme        =                  p_Doc.getAttributeValue("", ATTR_TYPE);
+			Integer coorX           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COOR_X)				);
+			Integer coorY           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COOR_Y)				);
+			Integer hauteur         = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_HAUTEUR_FORME)		);
+			Integer largeur         = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_LARGEUR_FORME)		);
+			Integer trait           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_EPAISSEUR_TRAIT)	);
+			Integer rgbCouleurTrait = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COULEUR_TRAIT)		);
+			Integer rgbCouleurFond  = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COULEUR_REMPLISSAGE));
 		
-			Color couleurContour = new Color(numCouleurContour);
-			Color couleurFond    = new Color(numCouleurFond);
+			Color couleurTrait = new Color(rgbCouleurTrait);
+			Color couleurFond    = new Color(rgbCouleurFond);
 		
 			switch(typeForme){
 				case Ligne.getForme():
-					formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurContour, couleurFond);
+					formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 					break;
 				case Ovale.getForme():
-					formeAjoute = new Ovale(coorX, coorY, hauteur, largeur, trait, couleurContour, couleurFond);
+					formeAjoute = new Ovale(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 					break;
 				case Rectangle.getForme():
-					formeAjoute = new Rectangle(coorX, coorY, hauteur, largeur, trait, couleurContour, couleurFond);
+					formeAjoute = new Rectangle(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 					break;
 			}
 			
