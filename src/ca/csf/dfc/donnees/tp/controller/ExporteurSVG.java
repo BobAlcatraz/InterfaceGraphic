@@ -32,6 +32,8 @@ public class ExporteurSVG implements IExporteur{
 		
 		return ExporteurSVG.m_Instance;
 	}
+	
+	// EXPORTAGE
 	public void Exporter(IEspaceTravail p_EspaceTravail) 
 	{
 		PrintWriter doc = null;
@@ -69,6 +71,8 @@ public class ExporteurSVG implements IExporteur{
     	JFileChooser chooser = new JFileChooser();
     		FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichiers svg (*.svg)","svg");
     		chooser.setFileFilter(filtre);
+    		
+    	// Windows
     	/*  chooser.setCurrentDirectory(new File("/home/%username%/Documents"));
    		int valRetournee = chooser.showOpenDialog(null); */
     		

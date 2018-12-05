@@ -117,11 +117,14 @@ public class EnregistrementXML implements IEnregistrement {
     	FileWriter fileWriter = null;
     	
     	JFileChooser chooser = new JFileChooser();
-    		chooser.setCurrentDirectory(new File("/home/%username%/Documents"));
     		FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichiers xml (*.xml)","xml");
     		chooser.setFileFilter(filtre);
-    		
-    	int valRetournee = chooser.showSaveDialog(null);
+    	
+    	// Windows
+    	/*chooser.setCurrentDirectory(new File("/home/%username%/Documents"));*	
+    	int valRetournee = chooser.showSaveDialog(null);*/
+ 
+    	int valRetournee = chooser.showSaveDialog(chooser.getParent());
     	
     	if (valRetournee == JFileChooser.APPROVE_OPTION) 
     	{	
@@ -162,7 +165,7 @@ public class EnregistrementXML implements IEnregistrement {
         	p_Doc.writeEndElement();
     	}
     }
-	
+
     
 	// CHARGEMENT
 	public void Charger(IEspaceTravail p_EspaceActuelEcrase) {	
@@ -216,6 +219,8 @@ public class EnregistrementXML implements IEnregistrement {
 		JFileChooser chooser = new JFileChooser();
 		FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichiers xml (*.xml)","xml");
 		    chooser.setFileFilter(filtre);
+		    
+		// Windows
 		/*  chooser.setCurrentDirectory(new File("/home/%username%/Documents"));
 		 int valRetournee = chooser.showOpenDialog(null); */
 		 int valRetournee = chooser.showOpenDialog(chooser.getParent());
@@ -257,7 +262,7 @@ public class EnregistrementXML implements IEnregistrement {
 			if(typeForme == "Ligne") {
 					// formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 			}
-			else if (typeForme == "Ovale") {
+			else if (typeForme == "Oval") {
 					formeAjoute = new Oval(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 			}
 			else if (typeForme == "Rectangle") {
