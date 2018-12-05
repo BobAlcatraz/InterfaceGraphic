@@ -22,6 +22,7 @@ import ca.csf.dfc.donnees.tp.model.*;
  *
  */
 public class EnregistrementXML implements IEnregistrement {
+	static private EnregistrementXML m_Instance = null; 
 	
 	//Éléments
 	private final static String ELM_ESPACE_TRAVAIL = "espace";
@@ -41,6 +42,17 @@ public class EnregistrementXML implements IEnregistrement {
     private final static String ATTR_COULEUR_TRAIT       = "coultrait";
     private final static String ATTR_COULEUR_REMPLISSAGE = "coulremplissage";
     
+    private EnregistrementXML(){
+    	EnregistrementXML.m_Instance = this;
+    }
+    
+    static public EnregistrementXML getInstance() {
+    	if(EnregistrementXML.m_Instance == null) {
+    		new EnregistrementXML();
+    	}
+    	
+    	return EnregistrementXML.m_Instance;
+    }
     
 	// ENREGISTREMENT
     public void Enregistrer(IEspaceTravail p_EspaceAEnregistrer) 
@@ -130,7 +142,7 @@ public class EnregistrementXML implements IEnregistrement {
     		Integer coorX                 = forme.GetX();
     		Integer coorY                 = forme.GetY();
     		Integer hauteurForme          = forme.GetHauteur();
-    		Integer largeurForme          = forme.GetLarger();
+    		Integer largeurForme          = forme.GetLargeur();
     		Integer epaisseurTrait        = forme.GetTrait();
     		Integer couleurRGBContour     = forme.GetCouleur().getRGB();
     		Integer couleurRGBRemplissage = forme.GetRemplissage().getRGB();
@@ -224,11 +236,11 @@ public class EnregistrementXML implements IEnregistrement {
 		p_Doc.next();
 	}
 	
-	private void chargerFormesDansEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws NumberFormatException { // Test par String, a changer pour ADD.
+	private void chargerFormesDansEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws XMLStreamException, NumberFormatException { // Test par String, a changer pour ADD.
 		
 		while (p_Doc.isStartElement() && p_Doc.getLocalName().equals(ELM_FORME))
         {
-			Forme formeAjoute;	
+			Forme formeAjoute = null;	
 			
 			String typeForme        =                  p_Doc.getAttributeValue("", ATTR_TYPE);
 			Integer coorX           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COOR_X)				);
@@ -242,16 +254,14 @@ public class EnregistrementXML implements IEnregistrement {
 			Color couleurTrait = new Color(rgbCouleurTrait);
 			Color couleurFond    = new Color(rgbCouleurFond);
 		
-			switch(typeForme){
-				case Ligne.getForme():
-					formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
-					break;
-				case Ovale.getForme():
-					formeAjoute = new Ovale(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
-					break;
-				case Rectangle.getForme():
+			if(typeForme == "Ligne") {
+					// formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
+			}
+			else if (typeForme == "Ovale") {
+					formeAjoute = new Oval(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
+			}
+			else if (typeForme == "Rectangle") {
 					formeAjoute = new Rectangle(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
-					break;
 			}
 			
 			if(formeAjoute != null)
