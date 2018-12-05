@@ -72,7 +72,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	
 	public void Refresh(int p_x, int p_y, int p_hauteur, int p_largeur) {
 		this.m_selectionne.Modifier(p_largeur + this.m_selectionne.GetLargeur(), p_hauteur + this.m_selectionne.GetHauteur());
-		this.m_selectionne.Deplacer(p_x, p_y);
+		this.m_selectionne.Deplacer(this.m_selectionne.GetX() +  p_x,this.m_selectionne.GetY() +  p_y);
 		this.repaint();
 	}
 	@Override
