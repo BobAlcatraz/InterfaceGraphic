@@ -13,6 +13,11 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 
 	private ArrayList<IForme> m_ListForme;
 	private Graphics2D m_Dessin;
+	private String m_FormeRecu;
+	private int pointx1;
+	private int pointx2;
+	private int pointy1;
+	private int pointy2;
 	
 	public EspaceTravail(int p_x, int p_y) {
 		super();
@@ -80,9 +85,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			if() {
-				
-			}
+			
 			
 		}
 
@@ -98,30 +101,36 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			if(e.get)
+			
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
+			EspaceTravail.this.pointx1 = e.getX();
+			EspaceTravail.this.pointy1 = e.getY();
 			
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
+			EspaceTravail.this.pointx2 = e.getX();
+			EspaceTravail.this.pointy2 = e.getY();
+			switch(EspaceTravail.this.m_FormeRecu) {
+			case "rectangle" :
+				
+				break;
+			}
 			
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
+			
 			
 		}
 		
@@ -135,8 +144,15 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 
 	@Override
 	public Iterator<IEspaceTravail> iterator() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
-
+	
+	public String getFormeRecu() {
+		return this.m_FormeRecu;
+	}
+	public void setFormeRecu(String p_formeRecu) {
+		this.m_FormeRecu = p_formeRecu;
+	}
+	
 }
