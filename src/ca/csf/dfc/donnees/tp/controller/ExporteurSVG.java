@@ -17,12 +17,6 @@ import ca.csf.dfc.donnees.tp.model.*;
 /**
  * @author JBrazeau
  *
- *Note: ecriture des formes: Couleurs
- * J'utilise couleurs rgb pour le fichier SVG
- *    .getRemplissage().getRed() 
- * Ajouter une fonction dans forme:
- *    .getRedRemplissage() 
- * Autrement je ne respecte pas la regle du voisinage
  */
 public class ExporteurSVG implements IExporteur{
 	public void Exporteur(IEspaceTravail p_EspaceTravail) 
@@ -77,9 +71,8 @@ public class ExporteurSVG implements IExporteur{
 	}
 
 	private void ecritureFormatSVGDesFormes(PrintWriter p_Doc, IEspaceTravail p_EspaceTravail) {
-		List<Forme> listeFormesExportees = p_EspaceTravail.getListeFormes();
 		
-		for(Forme forme: listeFormesExportees) {
+		for(IForme forme: p_EspaceTravail) {
 			if(forme instanceof Ovale) 
 			{
 				ecritureFormatSVGDeOvale(p_Doc, forme);
@@ -121,7 +114,7 @@ public class ExporteurSVG implements IExporteur{
 		Integer width  = p_Rectangle.GetLargeur();
 		Integer height = p_Rectangle.GetHauteur();
 		//Style (couleurs rgb)
-		Integer fillRed     = p_Rectangle.GetRemplissage().getRed(); // Ce serait pertinant d'avoir ces fonctions directement dans forme. (respect des regles)
+		Integer fillRed     = p_Rectangle.GetRemplissage().getRed(); 
 		Integer fillGreen   = p_Rectangle.GetRemplissage().getGreen();
 		Integer fillBlue    = p_Rectangle.GetRemplissage().getBlue();
 		Integer strokeRed   = p_Rectangle.GetCouleur().getRed();

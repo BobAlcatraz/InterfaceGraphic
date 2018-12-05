@@ -12,10 +12,6 @@ import ca.csf.dfc.donnees.tp.model.*;
 
 /**
  * @author JBrazeau
- *
- *Notes: IEspace de travail : listeFormes
- * J'ai besoin d'avoir accès à la liste des formes:
- *    .getListeFormes() 
  *    
  *Notes: .getForme() static?
  *    static finale string TYPE_FORME 
@@ -128,8 +124,8 @@ public class EnregistrementXML implements IEnregistrement {
     	return fileWriter;
     }
     
-    private void enregistrementFormes(XMLStreamWriter p_Doc, IEspaceTravail p_EspaceAEnregistrer) {
-    	for(Forme forme: p_EspaceAEnregistrer.getListeFormes()) 
+    private void enregistrementFormes(XMLStreamWriter p_Doc, IEspaceTravail p_EspaceAEnregistrer) throws XMLStreamException {
+    	for(IForme forme: p_EspaceAEnregistrer) 
     	{
     		Integer coorX                 = forme.GetX();
     		Integer coorY                 = forme.GetY();
@@ -148,7 +144,7 @@ public class EnregistrementXML implements IEnregistrement {
         	p_Doc.writeAttribute( ATTR_LARGEUR_FORME,       largeurForme.toString()          );
         	p_Doc.writeAttribute( ATTR_HAUTEUR_FORME,       hauteurForme.toString()          );
         	p_Doc.writeAttribute( ATTR_EPAISSEUR_TRAIT,     epaisseurTrait.toString()        );
-        	p_Doc.writeAttribute( ATTR_COULEUR_TRAIT,     couleurRGBContour.toString()     );
+        	p_Doc.writeAttribute( ATTR_COULEUR_TRAIT,       couleurRGBContour.toString()     );
         	p_Doc.writeAttribute( ATTR_COULEUR_REMPLISSAGE, couleurRGBRemplissage.toString() );
         	
         	p_Doc.writeEndElement();
