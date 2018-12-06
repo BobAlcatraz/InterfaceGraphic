@@ -32,4 +32,6 @@ public interface IEspaceTravail extends Comparable<IEspaceTravail>, Iterable<IFo
 	public void Deselectionner();
 	
 	public void Vider();
+	
+	public void AdapterForme();
 }
