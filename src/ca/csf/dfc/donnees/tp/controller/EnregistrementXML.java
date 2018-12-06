@@ -63,7 +63,6 @@ public class EnregistrementXML implements IEnregistrement {
         {
         	String largeurEspace = Integer.toString(p_EspaceAEnregistrer.getLargeur());
         	String hauteurEspace = Integer.toString(p_EspaceAEnregistrer.getHauteur());
-        	
 
             FileWriter output = creationFileWriterXMLParJFileChooser();
 
@@ -186,7 +185,7 @@ public class EnregistrementXML implements IEnregistrement {
 			
 			chargerDimensionEspace(doc, p_EspaceActuelEcrase);
 	        chargerFormesDansEspace(doc, p_EspaceActuelEcrase);
-			
+	        
 		}
 		catch(XMLStreamException exp) {
 			System.err.println(exp);
@@ -243,41 +242,34 @@ public class EnregistrementXML implements IEnregistrement {
 	
 
 	private void chargerFormesDansEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws NumberFormatException, XMLStreamException { // Test par String, a changer pour ADD.
-
+		p_EspaceTravail.Vider();
 		
 		while (p_Doc.isStartElement() && p_Doc.getLocalName().equals(ELM_FORME))
         {
 			Forme formeAjoute = null;	
 			
-			String typeForme        =                  p_Doc.getAttributeValue("", ATTR_TYPE);
-			Integer coorX           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COOR_X)				);
-			Integer coorY           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COOR_Y)				);
-			Integer hauteur         = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_HAUTEUR_FORME)		);
-			Integer largeur         = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_LARGEUR_FORME)		);
-			Integer trait           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_EPAISSEUR_TRAIT)	);
-			Integer rgbCouleurTrait = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COULEUR_TRAIT)		);
-			Integer rgbCouleurFond  = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COULEUR_REMPLISSAGE));
+			System.out.println( p_Doc.getAttributeValue(null, ATTR_TYPE));
+			
+			String typeForme        =                  p_Doc.getAttributeValue(null, ATTR_TYPE)                  ;
+			Integer coorX           = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_COOR_X)				);
+			Integer coorY           = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_COOR_Y)				);
+			Integer hauteur         = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_HAUTEUR_FORME)		);
+			Integer largeur         = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_LARGEUR_FORME)		);
+			Integer trait           = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_EPAISSEUR_TRAIT)	);
+			Integer rgbCouleurTrait = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_COULEUR_TRAIT)		);
+			Integer rgbCouleurFond  = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_COULEUR_REMPLISSAGE));
 		
-			Color couleurTrait = new Color(rgbCouleurTrait);
+			Color couleurTrait   = new Color(rgbCouleurTrait);
 			Color couleurFond    = new Color(rgbCouleurFond);
 		
-<<<<<<< HEAD
-			if(typeForme == "Ligne") {
-					// formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
-			}
-			else if (typeForme == "Oval") {
-=======
-
-			switch(typeForme){
+			switch(typeForme) {
 				case "ligne":
 					//formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 					break;
-				case "oval":
->>>>>>> master
+				case "oval":  
 					formeAjoute = new Oval(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 					break;
-				case "rectangle":
-
+				case "Rectangle":
 					formeAjoute = new Rectangle(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 			}
 			
@@ -285,9 +277,10 @@ public class EnregistrementXML implements IEnregistrement {
 			{
 				p_EspaceTravail.draw(formeAjoute);
 			}
-			
+
+			p_Doc.next(); 
 			p_Doc.next();
-		}
+	}
 		
 	}
 }
