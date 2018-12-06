@@ -236,7 +236,9 @@ public class EnregistrementXML implements IEnregistrement {
 		p_Doc.next();
 	}
 	
-	private void chargerFormesDansEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws XMLStreamException, NumberFormatException { // Test par String, a changer pour ADD.
+
+	private void chargerFormesDansEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws NumberFormatException, XMLStreamException { // Test par String, a changer pour ADD.
+
 		
 		while (p_Doc.isStartElement() && p_Doc.getLocalName().equals(ELM_FORME))
         {
@@ -254,13 +256,16 @@ public class EnregistrementXML implements IEnregistrement {
 			Color couleurTrait = new Color(rgbCouleurTrait);
 			Color couleurFond    = new Color(rgbCouleurFond);
 		
-			if(typeForme == "Ligne") {
-					// formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
-			}
-			else if (typeForme == "Ovale") {
+
+			switch(typeForme){
+				case "ligne":
+					//formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
+					break;
+				case "oval":
 					formeAjoute = new Oval(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
-			}
-			else if (typeForme == "Rectangle") {
+					break;
+				case "rectangle":
+
 					formeAjoute = new Rectangle(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 			}
 			
