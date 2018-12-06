@@ -85,7 +85,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	
 	@Override
 	public int getLargeur() {
-		
+	
 		return this.getWidth();
 	}
 
