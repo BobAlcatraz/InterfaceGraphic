@@ -24,7 +24,7 @@ public class Dessin extends JFrame implements IDessin{
 	private static final long serialVersionUID = 1L;
 	private IEspaceTravail m_EspaceTravail;
 	private IObserver m_Observer = new Observer();
-	private IEnregistrement m_Enregistrement = new EnregistrementXML();
+	private IEnregistrement m_Enregistrement = EnregistrementXML.getInstance();
 	private String m_FormeCreation = null;
 	private boolean m_EnDeplacement = false;
 	private boolean m_EnModification = false;
@@ -136,6 +136,7 @@ public class Dessin extends JFrame implements IDessin{
 			else if(Dessin.this.m_EnModification){
 				Dessin.this.m_EspaceTravail.Refresh(0, 0, p_e.getX() - Dessin.this.m_CurrentX, p_e.getY() - Dessin.this.m_CurrentY);
 			}
+		
 			Dessin.this.m_CurrentX = p_e.getX();
 			Dessin.this.m_CurrentY = p_e.getY();
 		}
