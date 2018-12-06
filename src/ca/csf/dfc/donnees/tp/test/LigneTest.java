@@ -1,10 +1,12 @@
-package ca.csf.dfc.donnees.tp.controller;
+package ca.csf.dfc.donnees.tp.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Color;
 
 import org.junit.jupiter.api.Test;
+
+import ca.csf.dfc.donnees.tp.controller.Ligne;
 
 class LigneTest {
 
@@ -13,7 +15,7 @@ class LigneTest {
 		Ligne test = new Ligne(1, 1, 1, 1, 1, null, null);	
 		
 		assertEquals(test.GetX(), 1);		
-		test.setX(3);
+		test.Deplacer(3, 0);
 		assertEquals(test.GetX(), 3);
 		
 	}
@@ -23,7 +25,7 @@ class LigneTest {
 		Ligne test = new Ligne(1, 1, 1, 1, 1, null, null);	
 		
 		assertEquals(test.GetY(), 1);		
-		test.setY(3);
+		test.Deplacer(0,3);
 		assertEquals(test.GetY(), 3);
 		
 	}
@@ -33,7 +35,7 @@ class LigneTest {
 		Ligne test = new Ligne(1, 1, 1, 1, 1, null, null);	
 		
 		assertEquals(test.GetHauteur(), 1);		
-		test.setHauteur(130);
+		test.Modifier(0,130);
 		assertEquals(test.GetHauteur(), 130);
 		
 	}
@@ -43,7 +45,7 @@ class LigneTest {
 		Ligne test = new Ligne(1, 1, 1, 1, 1, null, null);	
 		
 		assertEquals(test.GetLargeur(), 1);		
-		test.setLargeur(130);
+		test.Modifier(130,0);
 		assertEquals(test.GetLargeur(), 130);
 	}
 
@@ -52,7 +54,7 @@ class LigneTest {
 		Ligne test = new Ligne(1, 1, 1, 1, 1, null, null);	
 		
 		assertEquals(test.GetTrait(), 1);		
-		test.setTrait(3);
+		test.ModifierTrait(3);
 		assertEquals(test.GetTrait(), 3);
 	}
 
@@ -61,9 +63,9 @@ class LigneTest {
 		Ligne test = new Ligne(1, 1, 1, 1, 1, null, null);	
 		
 		assertEquals(test.GetCouleur(), null);
-		test.setCouleur(Color.BLACK);
+		test.ModifierCouleur(Color.BLACK);
 		assertEquals(test.GetCouleur(), Color.BLACK);
-		test.setCouleur(Color.WHITE);
+		test.ModifierCouleur(Color.WHITE);
 		assertEquals(test.GetCouleur(), Color.WHITE);
 
 		
@@ -74,9 +76,9 @@ class LigneTest {
 		Ligne test = new Ligne(1, 1, 1, 1, 1, null, null);
 		
 		assertEquals(test.GetRemplissage(), null);
-		test.setRemplissage(Color.BLACK);
+		test.ModifierRemplisage(Color.BLACK);
 		assertEquals(test.GetRemplissage(), Color.BLACK);
-		test.setRemplissage(Color.WHITE);
+		test.ModifierRemplisage(Color.WHITE);
 		assertEquals(test.GetRemplissage(), Color.WHITE);
 	}
 

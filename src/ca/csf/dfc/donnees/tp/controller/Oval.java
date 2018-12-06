@@ -161,5 +161,23 @@ public class Oval extends Forme {
 		this.m_Remplissage = p_Remplissage;
 
 	}
+	
+	@Override
+	public void ModifierCouleur(Color p_couleur) {
+		this.m_Couleur = p_couleur;
+		
+	}
+
+	@Override
+	public void ModifierTrait(int p_trait) {
+		this.m_Trait = p_trait;
+		
+	}
+
+	@Override
+	public void ModifierRemplisage(Color p_couleur) {
+		this.m_Remplissage = p_couleur;
+		
+	}
 
 }
