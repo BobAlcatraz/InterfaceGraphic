@@ -9,7 +9,7 @@ public interface IEspaceTravail extends Comparable<IEspaceTravail>, Iterable<IFo
 
 	public void setTaille(int p_x, int p_y);
 	
-	public void supprimer(IForme p_forme);
+	public void supprimer();
 	
 	public void verifierClick(int p_x, int p_y);
 	
@@ -22,4 +22,12 @@ public interface IEspaceTravail extends Comparable<IEspaceTravail>, Iterable<IFo
 	public int getLargeur();
 	
 	public int getHauteur();
+	
+	public void Refresh(int p_x, int p_y, int p_hauteur, int p_largeur);
+	
+	public boolean hasSelection();
+	
+	public boolean dansSelection(int p_x, int p_y);
+	
+	public void Deselectionner();
 }

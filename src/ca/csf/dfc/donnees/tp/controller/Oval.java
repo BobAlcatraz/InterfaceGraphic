@@ -1,9 +1,10 @@
 package ca.csf.dfc.donnees.tp.controller;
 
 
+
 import java.awt.Color;
 
-//import org.omg.IOP.TAG_INTERNET_IOP;
+
 
 /**
  * 
@@ -56,7 +57,7 @@ public class Oval extends Forme {
 	@Override
 	public String GetForme() {
 
-		return "Oval";
+		return "oval";
 	}
 
 	@Override
