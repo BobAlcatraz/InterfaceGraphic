@@ -1,3 +1,6 @@
+package ca.csf.dfc.donnees.tp.controller;
+
+
 import java.awt.Color;
 
 public class Rectangle extends Forme {
