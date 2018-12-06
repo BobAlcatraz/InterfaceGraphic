@@ -167,7 +167,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 					case "rectangle" :
 						graph.drawRect(laForme.GetX()-2, laForme.GetY()-2, laForme.GetLargeur()+5, laForme.GetHauteur()+5);
 						graph.setColor(this.m_point.GetRemplissage());
-						graph.fillOval(this.m_point.GetX()+2, this.m_point.GetY()+2, this.m_point.GetLargeur(), this.m_point.GetHauteur());
+						graph.fillOval(this.m_point.GetX(), this.m_point.GetY(), this.m_point.GetLargeur(), this.m_point.GetHauteur());
 						break;
 					case "oval" :
 						graph.drawRect(laForme.GetX()-2, laForme.GetY()-2, laForme.GetLargeur()+5, laForme.GetHauteur()+5);
@@ -178,7 +178,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 						int pointx2 = forme.GetX() + forme.GetLargeur();
 						int pointy2 = forme.GetY() + forme.GetHauteur();
 						graph.drawLine(forme.GetX()+2, forme.GetY()+2, pointx2+2, pointy2+2);
-						graph.drawOval(pointx2 + 2, pointy2 + 2, this.m_point.GetLargeur(), this.m_point.GetHauteur());
+						graph.fillOval(this.m_point.GetX(), this.m_point.GetY(), this.m_point.GetLargeur(), this.m_point.GetHauteur());
 						break;
 				}
 			}

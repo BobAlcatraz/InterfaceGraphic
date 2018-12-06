@@ -14,6 +14,8 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
 import ca.csf.dfc.donnees.tp.controller.*;
@@ -22,6 +24,8 @@ import ca.csf.dfc.donnees.tp.model.*;
 public class Dessin extends JFrame implements IDessin{
 	private static final long serialVersionUID = 1L;
 	private IEspaceTravail m_EspaceTravail;
+	private JMenuBar m_Menu = new JMenuBar();
+	private JMenu m_Fichier = new JMenu("Fichier");
 	private IObserver m_Observer = new Observer();
 	private IEnregistrement m_Enregistrement = EnregistrementXML.getInstance();
 	private String m_FormeCreation = "Pointeur";
@@ -196,7 +200,8 @@ public class Dessin extends JFrame implements IDessin{
 				break;
 			case("Ligne"):
 				Dessin.this.m_EspaceTravail.Deselectionner();
-				//Dessin.this.AjouterForme(new Ligne(p_e.getX(), p_e.getY(), 1, 1, Dessin.this.m_Trait, Dessin.this.m_CouleurTrait, Dessin.this.m_Remplissage));
+				Dessin.this.AjouterForme(new Ligne(p_e.getX(), p_e.getY(), Dessin.this.m_EspaceTravail.getHauteur()/10, Dessin.this.m_EspaceTravail.getLargeur()/5, 
+						Dessin.this.m_Trait, Dessin.this.m_CouleurTrait, Dessin.this.m_Remplissage));
 				Dessin.this.m_FormeCreation = "Pointeur";
 			}
 		}
