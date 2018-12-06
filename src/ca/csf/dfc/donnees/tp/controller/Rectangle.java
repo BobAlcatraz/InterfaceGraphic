@@ -1,5 +1,4 @@
 package ca.csf.dfc.donnees.tp.controller;
-
 import java.awt.Color;
 
 public class Rectangle extends Forme {
@@ -25,9 +24,9 @@ public class Rectangle extends Forme {
 		int x1 = this.m_X;
 		int y1 = this.m_Y;
 		int x2 = (x1 + this.m_Largeur);
-		int y2 = (y1 - this.m_Hauteur);
+		int y2 = (y1 + this.m_Hauteur);
 			
-		return (((p_X >= x1)&&(p_X <= x2))&&((p_Y >= y2)&&(p_Y <= y1)));				
+		return (((p_X >= x1)&&(p_X <= x2))&&((p_Y <= y2)&&(p_Y >= y1)));				
 	}
 
 	@Override

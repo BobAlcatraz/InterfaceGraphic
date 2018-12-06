@@ -1,6 +1,5 @@
 package ca.csf.dfc.donnees.tp.controller;
 
-
 import java.awt.Color;
 
 //import org.omg.IOP.TAG_INTERNET_IOP;
@@ -30,10 +29,11 @@ public class Oval extends Forme {
 	@Override
 	public Boolean isclicked(int p_X, int p_Y) {
 
-		int centreX = this.m_X / 2;
-		int centreY = this.m_Y / 2;
 		int demiH = this.m_Hauteur / 2;
 		int demiL = this.m_Largeur / 2;
+		int centreX = this.m_X +demiL;
+		int centreY = this.m_Y -demiH;
+		
 
 		return ((int) Math.pow((p_X - centreX), 2) / (int) Math.pow(demiH, 2))
 				+ ((int) Math.pow((p_Y - centreY), 2)) / ((int) Math.pow(demiL, 2)) <= 1;
@@ -56,7 +56,7 @@ public class Oval extends Forme {
 	@Override
 	public String GetForme() {
 
-		return "Oval";
+		return "oval";
 	}
 
 	@Override
@@ -103,17 +103,20 @@ public class Oval extends Forme {
 	@Override
 	public int compareTo(IForme p_o) {
 		int resultat=-1;
-		if (this.m_Y==p_o.GetX()&&
+		if (this.m_X==p_o.GetX()&&
 				this.m_Y==p_o.GetY()&&
 				this.m_Hauteur==p_o.GetHauteur()&&
 				this.m_Largeur==p_o.GetLargeur()&&
 				this.m_Couleur==p_o.GetCouleur()&&
 				this.m_Remplissage==p_o.GetRemplissage()&&
 				this.m_Trait==p_o.GetTrait()&&
-				this.GetForme()==p_o.GetForme())
+				this.GetForme()==p_o.GetForme()
+				)
 		{
 			resultat=0;
 		}
+		
+		
 		return resultat;
 	}
 
