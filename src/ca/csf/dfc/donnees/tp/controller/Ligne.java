@@ -47,7 +47,7 @@ public class Ligne extends Forme{
 		}
 		else if (((p_X >= x1)&&(p_X <= x2))&&((p_Y >= y2)&&(p_Y <= y1))) {
 			
-			if((p_Y >= (a * (p_X - 20) + b)) && (p_Y <= (a * (p_X + 20) + b))) {
+			if((p_Y >= ((a * p_X + b) - 20)) && (p_Y <= ((a * p_X + b) + 20))) {
 				retour = true;
 			}
 			
