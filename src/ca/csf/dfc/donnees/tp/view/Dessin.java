@@ -164,10 +164,10 @@ public class Dessin extends JFrame implements IDessin{
 						Dessin.this.m_EnDeplacement = true;
 						Dessin.this.m_EnModification = false;
 					}
-					/*else if (((EspaceTravail)Dessin.this.m_EspaceTravail).dansPointModif(p_e.getX(), p_e.getY())) {
+					else if (((EspaceTravail)Dessin.this.m_EspaceTravail).dansPointModif(p_e.getX(), p_e.getY())) {
 						Dessin.this.m_EnModification = true;
 						Dessin.this.m_EnDeplacement = false;
-					}*/
+					}
 					else {
 						Dessin.this.m_EspaceTravail.verifierClick(p_e.getX(), p_e.getY());
 					}
