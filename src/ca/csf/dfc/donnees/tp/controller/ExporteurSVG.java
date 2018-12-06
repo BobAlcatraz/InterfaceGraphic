@@ -90,7 +90,9 @@ public class ExporteurSVG implements IExporteur{
 	private void ecritureFormatSVGDesFormes(PrintWriter p_Doc, IEspaceTravail p_EspaceTravail) {
 		
 		for(IForme forme: p_EspaceTravail) {
+
 			if(forme instanceof Oval) 
+
 			{
 				ecritureFormatSVGDeOvale(p_Doc, (Oval)forme);
 			}
