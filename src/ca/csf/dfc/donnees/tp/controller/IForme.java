@@ -1,3 +1,5 @@
+package ca.csf.dfc.donnees.tp.controller;
+
 import java.awt.*;
 
 public interface IForme extends Comparable<IForme>{
