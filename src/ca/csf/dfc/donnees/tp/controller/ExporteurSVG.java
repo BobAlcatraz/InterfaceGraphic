@@ -77,9 +77,8 @@ public class ExporteurSVG implements IExporteur{
 	}
 
 	private void ecritureFormatSVGDesFormes(PrintWriter p_Doc, IEspaceTravail p_EspaceTravail) {
-		List<Forme> listeFormesExportees = p_EspaceTravail.getListeFormes();
 		
-		for(Forme forme: listeFormesExportees) {
+		for(IForme forme: p_EspaceTravail) {
 			if(forme instanceof Ovale) 
 			{
 				ecritureFormatSVGDeOvale(p_Doc, forme);
@@ -95,7 +94,7 @@ public class ExporteurSVG implements IExporteur{
 		}
 	}
 
-	private void ecritureFormatSVGDeOvale(PrintWriter p_Doc, Ovale p_Ovale) {
+	private void ecritureFormatSVGDeOvale(PrintWriter p_Doc, Oval p_Ovale) {
 		Integer cx = p_Ovale.GetX(); //test
 		Integer cy = p_Ovale.GetY();
 		Integer rx = p_Ovale.GetLargeur()/2;
@@ -127,7 +126,7 @@ public class ExporteurSVG implements IExporteur{
 		Integer strokeRed   = p_Rectangle.GetCouleur().getRed();
 		Integer strokeGreen = p_Rectangle.GetCouleur().getGreen();
 		Integer strokeBlue  = p_Rectangle.GetCouleur().getBlue();
-		Integer strokeWidth = Integer.toString(p_Rectangle.GetTrait());
+		Integer strokeWidth = p_Rectangle.GetTrait();
 		
 		
 		p_Doc.println("	<rect x=\""+ x +"\" y=\""+ y +"\" width=\""+ width +"\" height=\""+ height +"\" "

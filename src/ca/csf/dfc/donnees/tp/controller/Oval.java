@@ -56,7 +56,7 @@ public class Oval extends Forme {
 	@Override
 	public String GetForme() {
 
-		return "Oval";
+		return "oval";
 	}
 
 	@Override

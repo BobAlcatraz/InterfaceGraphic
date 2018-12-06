@@ -128,13 +128,13 @@ public class EnregistrementXML implements IEnregistrement {
     	return fileWriter;
     }
     
-    private void enregistrementFormes(XMLStreamWriter p_Doc, IEspaceTravail p_EspaceAEnregistrer) {
-    	for(Forme forme: p_EspaceAEnregistrer.getListeFormes()) 
+    private void enregistrementFormes(XMLStreamWriter p_Doc, IEspaceTravail p_EspaceAEnregistrer) throws XMLStreamException {
+    	for(IForme forme: p_EspaceAEnregistrer) 
     	{
     		Integer coorX                 = forme.GetX();
     		Integer coorY                 = forme.GetY();
     		Integer hauteurForme          = forme.GetHauteur();
-    		Integer largeurForme          = forme.GetLarger();
+    		Integer largeurForme          = forme.GetLargeur();
     		Integer epaisseurTrait        = forme.GetTrait();
     		Integer couleurRGBContour     = forme.GetCouleur().getRGB();
     		Integer couleurRGBRemplissage = forme.GetRemplissage().getRGB();
@@ -228,11 +228,11 @@ public class EnregistrementXML implements IEnregistrement {
 		p_Doc.next();
 	}
 	
-	private void chargerFormesDansEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws NumberFormatException { // Test par String, a changer pour ADD.
+	private void chargerFormesDansEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws NumberFormatException, XMLStreamException { // Test par String, a changer pour ADD.
 		
 		while (p_Doc.isStartElement() && p_Doc.getLocalName().equals(ELM_FORME))
         {
-			Forme formeAjoute;	
+			Forme formeAjoute = null;	
 			
 			String typeForme        =                  p_Doc.getAttributeValue("", ATTR_TYPE);
 			Integer coorX           = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_COOR_X)				);
@@ -247,13 +247,13 @@ public class EnregistrementXML implements IEnregistrement {
 			Color couleurFond    = new Color(rgbCouleurFond);
 		
 			switch(typeForme){
-				case Ligne.getForme():
-					formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
+				case "ligne":
+					//formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 					break;
-				case Ovale.getForme():
-					formeAjoute = new Ovale(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
+				case "oval":
+					formeAjoute = new Oval(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 					break;
-				case Rectangle.getForme():
+				case "rectangle":
 					formeAjoute = new Rectangle(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 					break;
 			}
