@@ -7,5 +7,5 @@ import ca.csf.dfc.donnees.tp.model.IEspaceTravail;
  *
  */
 public interface IExporteur {
-	public void Exporteur(IEspaceTravail p_EspaceTravail);
+	public void Exporter(IEspaceTravail p_EspaceTravail);
 }
