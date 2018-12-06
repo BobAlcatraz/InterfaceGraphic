@@ -14,7 +14,6 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import ca.csf.dfc.donnees.tp.controller.*;
@@ -25,7 +24,7 @@ public class Dessin extends JFrame implements IDessin{
 	private IEspaceTravail m_EspaceTravail;
 	private IObserver m_Observer = new Observer();
 	private IEnregistrement m_Enregistrement = EnregistrementXML.getInstance();
-	private String m_FormeCreation = null;
+	private String m_FormeCreation = "Pointeur";
 	private boolean m_EnDeplacement = false;
 	private boolean m_EnModification = false;
 	private int m_CurrentX = 0;
@@ -183,6 +182,7 @@ public class Dessin extends JFrame implements IDessin{
 						Dessin.this.m_EspaceTravail.getLargeur()/5, 
 						Dessin.this.m_Trait, Dessin.this.m_CouleurTrait, 
 						Dessin.this.m_Remplissage));
+				Dessin.this.m_FormeCreation = "Pointeur";
 				break;
 			case("Oval"):
 				Dessin.this.m_EspaceTravail.Deselectionner();
@@ -192,10 +192,12 @@ public class Dessin extends JFrame implements IDessin{
 						Dessin.this.m_Trait, 
 						Dessin.this.m_CouleurTrait, 
 						Dessin.this.m_Remplissage));
+				Dessin.this.m_FormeCreation = "Pointeur";
 				break;
 			case("Ligne"):
 				Dessin.this.m_EspaceTravail.Deselectionner();
 				//Dessin.this.AjouterForme(new Ligne(p_e.getX(), p_e.getY(), 1, 1, Dessin.this.m_Trait, Dessin.this.m_CouleurTrait, Dessin.this.m_Remplissage));
+				Dessin.this.m_FormeCreation = "Pointeur";
 			}
 		}
 
