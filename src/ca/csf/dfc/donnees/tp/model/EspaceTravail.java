@@ -30,7 +30,6 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	@Override
 	public void setTaille(int p_x, int p_y) {
 		this.setSize(p_x, p_y);
-		
 	}
 
 	@Override
