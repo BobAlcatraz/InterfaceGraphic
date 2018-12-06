@@ -202,7 +202,11 @@ public class Dessin extends JFrame implements IDessin{
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent p_e) {}
+		public void mouseReleased(MouseEvent p_e) {
+			if (Dessin.this.m_EnModification) {
+				Dessin.this.m_EspaceTravail.AdapterForme();
+			}
+		}
 
 		@Override
 		public void mouseEntered(MouseEvent p_e) {}
