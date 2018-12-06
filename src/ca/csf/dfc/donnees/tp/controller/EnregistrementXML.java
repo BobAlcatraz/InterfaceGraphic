@@ -12,10 +12,6 @@ import ca.csf.dfc.donnees.tp.model.*;
 
 /**
  * @author JBrazeau
- *
- *Notes: IEspace de travail : listeFormes
- * J'ai besoin d'avoir accès à la liste des formes:
- *    .getListeFormes() 
  *    
  *Notes: .getForme() static?
  *    static finale string TYPE_FORME 
@@ -26,6 +22,7 @@ import ca.csf.dfc.donnees.tp.model.*;
  *
  */
 public class EnregistrementXML implements IEnregistrement {
+	static private EnregistrementXML m_Instance = null; 
 	
 	//Éléments
 	private final static String ELM_ESPACE_TRAVAIL = "espace";
@@ -45,6 +42,17 @@ public class EnregistrementXML implements IEnregistrement {
     private final static String ATTR_COULEUR_TRAIT       = "coultrait";
     private final static String ATTR_COULEUR_REMPLISSAGE = "coulremplissage";
     
+    private EnregistrementXML(){
+    	EnregistrementXML.m_Instance = this;
+    }
+    
+    static public EnregistrementXML getInstance() {
+    	if(EnregistrementXML.m_Instance == null) {
+    		new EnregistrementXML();
+    	}
+    	
+    	return EnregistrementXML.m_Instance;
+    }
     
 	// ENREGISTREMENT
     public void Enregistrer(IEspaceTravail p_EspaceAEnregistrer) 
@@ -148,7 +156,7 @@ public class EnregistrementXML implements IEnregistrement {
         	p_Doc.writeAttribute( ATTR_LARGEUR_FORME,       largeurForme.toString()          );
         	p_Doc.writeAttribute( ATTR_HAUTEUR_FORME,       hauteurForme.toString()          );
         	p_Doc.writeAttribute( ATTR_EPAISSEUR_TRAIT,     epaisseurTrait.toString()        );
-        	p_Doc.writeAttribute( ATTR_COULEUR_TRAIT,     couleurRGBContour.toString()     );
+        	p_Doc.writeAttribute( ATTR_COULEUR_TRAIT,       couleurRGBContour.toString()     );
         	p_Doc.writeAttribute( ATTR_COULEUR_REMPLISSAGE, couleurRGBRemplissage.toString() );
         	
         	p_Doc.writeEndElement();
@@ -228,7 +236,9 @@ public class EnregistrementXML implements IEnregistrement {
 		p_Doc.next();
 	}
 	
+
 	private void chargerFormesDansEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws NumberFormatException, XMLStreamException { // Test par String, a changer pour ADD.
+
 		
 		while (p_Doc.isStartElement() && p_Doc.getLocalName().equals(ELM_FORME))
         {
@@ -246,6 +256,7 @@ public class EnregistrementXML implements IEnregistrement {
 			Color couleurTrait = new Color(rgbCouleurTrait);
 			Color couleurFond    = new Color(rgbCouleurFond);
 		
+
 			switch(typeForme){
 				case "ligne":
 					//formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
@@ -254,8 +265,8 @@ public class EnregistrementXML implements IEnregistrement {
 					formeAjoute = new Oval(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 					break;
 				case "rectangle":
+
 					formeAjoute = new Rectangle(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
-					break;
 			}
 			
 			if(formeAjoute != null)

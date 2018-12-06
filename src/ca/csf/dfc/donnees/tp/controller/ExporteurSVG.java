@@ -17,15 +17,22 @@ import ca.csf.dfc.donnees.tp.model.*;
 /**
  * @author JBrazeau
  *
- *Note: ecriture des formes: Couleurs
- * J'utilise couleurs rgb pour le fichier SVG
- *    .getRemplissage().getRed() 
- * Ajouter une fonction dans forme:
- *    .getRedRemplissage() 
- * Autrement je ne respecte pas la regle du voisinage
  */
 public class ExporteurSVG implements IExporteur{
-	public void Exporteur(IEspaceTravail p_EspaceTravail) 
+	static private ExporteurSVG m_Instance = null;
+	
+	private ExporteurSVG() {
+		ExporteurSVG.m_Instance = this;
+	}
+	
+	static public ExporteurSVG getInstance() {
+		if(ExporteurSVG.m_Instance == null) {
+			new ExporteurSVG();
+		}
+		
+		return ExporteurSVG.m_Instance;
+	}
+	public void Exporter(IEspaceTravail p_EspaceTravail) 
 	{
 		PrintWriter doc = null;
 		try 
@@ -34,7 +41,11 @@ public class ExporteurSVG implements IExporteur{
 			Integer largeurEspace = p_EspaceTravail.getLargeur();
 			
 			doc = creationPrintWriterSVGParJFileChooser();
-			doc.println("<svg height=\""+ hauteurEspace +"\" width=\"" + largeurEspace +"\">");
+			doc.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
+			doc.println("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \r\n" + 
+					"  \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">");
+			doc.println("<svg height=\""+ hauteurEspace +"\" width=\"" + largeurEspace +"\" version=\"1.1\" " + 
+					"xmlns=\"http://www.w3.org/2000/svg\">");
 			
 			ecritureFormatSVGDesFormes(doc, p_EspaceTravail);
 			
@@ -79,15 +90,17 @@ public class ExporteurSVG implements IExporteur{
 	private void ecritureFormatSVGDesFormes(PrintWriter p_Doc, IEspaceTravail p_EspaceTravail) {
 		
 		for(IForme forme: p_EspaceTravail) {
-			if(forme instanceof Ovale) 
+
+			if(forme instanceof Oval) 
+
 			{
-				ecritureFormatSVGDeOvale(p_Doc, forme);
+				ecritureFormatSVGDeOvale(p_Doc, (Oval)forme);
 			}
 			else if(forme instanceof Rectangle) 
 			{
-				ecritureFormatSVGDeRectangle(p_Doc, forme);
+				ecritureFormatSVGDeRectangle(p_Doc, (Rectangle)forme);
 			}
-			else if(forme instanceof Ligne) 
+			else if(forme instanceof IForme) 
 			{
 				ecritureFormatSVGDeLigne(p_Doc, forme);
 			}
@@ -120,7 +133,7 @@ public class ExporteurSVG implements IExporteur{
 		Integer width  = p_Rectangle.GetLargeur();
 		Integer height = p_Rectangle.GetHauteur();
 		//Style (couleurs rgb)
-		Integer fillRed     = p_Rectangle.GetRemplissage().getRed(); // Ce serait pertinant d'avoir ces fonctions directement dans forme. (respect des regles)
+		Integer fillRed     = p_Rectangle.GetRemplissage().getRed(); 
 		Integer fillGreen   = p_Rectangle.GetRemplissage().getGreen();
 		Integer fillBlue    = p_Rectangle.GetRemplissage().getBlue();
 		Integer strokeRed   = p_Rectangle.GetCouleur().getRed();
@@ -135,7 +148,7 @@ public class ExporteurSVG implements IExporteur{
 		    		          + "stroke-width:"+ strokeWidth +"\" />");
 	}
 	
-	private void ecritureFormatSVGDeLigne(PrintWriter p_Doc, Ligne p_Ligne) {
+	private void ecritureFormatSVGDeLigne(PrintWriter p_Doc, IForme p_Ligne) {
 		Integer x1 = p_Ligne.GetX();
 		Integer y1 = p_Ligne.GetY();
 		Integer x2 = x1 + p_Ligne.GetLargeur();
