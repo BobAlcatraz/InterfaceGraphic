@@ -24,6 +24,7 @@ public class Ligne extends Forme{
 		int y1 = this.m_Y;
 		int x2 = (x1 + this.m_Largeur);
 		int y2 = (y1 - this.m_Hauteur);
+			
 		Boolean retour = false;		
 		
 		double a = ((y2-y1)/(x2-x1));		
@@ -45,7 +46,14 @@ public class Ligne extends Forme{
 			}
 						
 		}
-		else if (((p_X >= x1)&&(p_X <= x2))&&((p_Y >= y2)&&(p_Y <= y1))) {
+		else if ((this.m_Hauteur > 0) && ((p_X >= x1)&&(p_X <= x2))&&((p_Y >= y2)&&(p_Y <= y1))) {
+			
+			if((p_Y >= ((a * p_X + b) - 20)) && (p_Y <= ((a * p_X + b) + 20))) {
+				retour = true;
+			}
+			
+		}
+		else if ((this.m_Hauteur < 0) && ((p_X >= x1)&&(p_X <= x2))&&((p_Y <= y2)&&(p_Y >= y1))) {
 			
 			if((p_Y >= ((a * p_X + b) - 20)) && (p_Y <= ((a * p_X + b) + 20))) {
 				retour = true;
@@ -53,6 +61,9 @@ public class Ligne extends Forme{
 			
 		}
 				
+		
+		
+
 		return retour;
 		
 	}
