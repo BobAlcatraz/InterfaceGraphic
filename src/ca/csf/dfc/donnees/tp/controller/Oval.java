@@ -1,5 +1,4 @@
-import java.awt.Color;
-
+package ca.csf.dfc.donnees.tp.controller;
 
 import java.awt.Color;
 
@@ -33,7 +32,7 @@ public class Oval extends Forme {
 		int demiH = this.m_Hauteur / 2;
 		int demiL = this.m_Largeur / 2;
 		int centreX = this.m_X +demiL;
-		int centreY = this.m_Y -demiH;
+		int centreY = this.m_Y +demiH;
 		
 
 		return ((int) Math.pow((p_X - centreX), 2) / (int) Math.pow(demiH, 2))
@@ -161,6 +160,24 @@ public class Oval extends Forme {
 	protected void setRemplissage(Color p_Remplissage) {
 		this.m_Remplissage = p_Remplissage;
 
+	}
+	
+	@Override
+	public void ModifierCouleur(Color p_couleur) {
+		this.m_Couleur = p_couleur;
+		
+	}
+
+	@Override
+	public void ModifierTrait(int p_trait) {
+		this.m_Trait = p_trait;
+		
+	}
+
+	@Override
+	public void ModifierRemplisage(Color p_couleur) {
+		this.m_Remplissage = p_couleur;
+		
 	}
 
 }

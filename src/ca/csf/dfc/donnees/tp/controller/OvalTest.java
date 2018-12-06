@@ -1,12 +1,13 @@
+package ca.csf.dfc.donnees.tp.controller;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.awt.Color;
+
 import org.junit.jupiter.api.Test;
-import java.awt.*;
 
+class OvalTest {
 
-
-class TestOval {
-	
 	@Test
 	void testConst1() {
 		Oval oval=new Oval(7, 6,10, 10, 8, Color.BLACK, Color.BLUE);
