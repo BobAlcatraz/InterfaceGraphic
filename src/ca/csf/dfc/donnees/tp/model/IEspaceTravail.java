@@ -30,4 +30,6 @@ public interface IEspaceTravail extends Comparable<IEspaceTravail>, Iterable<IFo
 	public boolean dansSelection(int p_x, int p_y);
 	
 	public void Deselectionner();
+	
+	public void Vider();
 }
