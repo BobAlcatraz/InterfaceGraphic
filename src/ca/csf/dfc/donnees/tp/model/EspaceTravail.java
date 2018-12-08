@@ -27,9 +27,16 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		this.setPreferredSize(new Dimension(p_x, p_y));
 	}
 	
+	public EspaceTravail(EspaceTravail p_ES) {
+		this.setPreferredSize(new Dimension(p_ES.getWidth(), p_ES.getHeight()));
+		for (IForme forme : p_ES) {
+			this.m_ListForme.add(forme.GetCopie());
+		}
+	}
+	
 	@Override
 	public void setTaille(int p_x, int p_y) {
-		this.setSize(p_x, p_y);
+		this.setPreferredSize(new Dimension(p_x, p_y));
 	}
 
 	@Override
@@ -84,13 +91,13 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	@Override
 	public int getLargeur() {
 	
-		return this.getWidth();
+		return this.getPreferredSize().width;
 	}
 
 	@Override
 	public int getHauteur() {
 		
-		return this.getHeight();
+		return this.getPreferredSize().height;
 	}
 	
 	@Override
@@ -111,7 +118,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	
 	@Override
 	public void AdapterForme() {
-		if (this.m_selectionne.GetHauteur() < 0) {
+		if (this.m_selectionne.GetHauteur() < 0 && this.m_selectionne.GetForme() != "ligne") {
 			int y = this.m_selectionne.GetY();
 			y += this.m_selectionne.GetHauteur();
 			this.m_selectionne.Modifier(this.m_selectionne.GetLargeur(), this.m_selectionne.GetHauteur() * -1);
@@ -177,7 +184,8 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 					case "ligne" :
 						int pointx2 = forme.GetX() + forme.GetLargeur();
 						int pointy2 = forme.GetY() + forme.GetHauteur();
-						graph.drawLine(forme.GetX()+2, forme.GetY()+2, pointx2+2, pointy2+2);
+						graph.drawLine(this.m_selectionne.GetX(), this.m_selectionne.GetY(), pointx2, pointy2);
+						graph.setColor(this.m_point.GetRemplissage());
 						graph.fillOval(this.m_point.GetX(), this.m_point.GetY(), this.m_point.GetLargeur(), this.m_point.GetHauteur());
 						break;
 				}
@@ -201,12 +209,22 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		int verif= 0;
 		int rendu = 0;
 		for(IForme forme : o) {
-			if(forme != this.m_ListForme.get(rendu)) {
+			if(this.m_ListForme.size() == rendu || !forme.equals(this.m_ListForme.get(rendu))) {
 				verif++;
 			}
 				rendu++;
 		}
 		return verif;
+	}
+	
+	@Override
+	public boolean equals(Object p_ET) {
+		if (!(p_ET instanceof EspaceTravail) || this.compareTo((EspaceTravail)p_ET) != 0) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 	@Override
@@ -214,6 +232,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		
 		return new EspaceIterator();
 	}
+	
 	private class EspaceIterator implements Iterator<IForme>{
 
 		private int m_cible;
@@ -239,5 +258,10 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 			return forme;
 		}
 		
+	}
+
+	@Override
+	public IEspaceTravail GetCopie() {
+		return new EspaceTravail(this);
 	}
 }

@@ -1,6 +1,8 @@
 package ca.csf.dfc.donnees.tp.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -11,11 +13,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ca.csf.dfc.donnees.tp.controller.*;
@@ -24,42 +29,70 @@ import ca.csf.dfc.donnees.tp.model.*;
 public class Dessin extends JFrame implements IDessin{
 	private static final long serialVersionUID = 1L;
 	private IEspaceTravail m_EspaceTravail;
-	private JMenuBar m_Menu = new JMenuBar();
-	private JMenu m_Fichier = new JMenu("Fichier");
 	private IObserver m_Observer = new Observer();
 	private IEnregistrement m_Enregistrement = EnregistrementXML.getInstance();
+	private IExporteur m_Exporteur = ExporteurSVG.getInstance();
 	private String m_FormeCreation = "Pointeur";
 	private boolean m_EnDeplacement = false;
 	private boolean m_EnModification = false;
 	private int m_CurrentX = 0;
 	private int m_CurrentY = 0;
-	private JButton butt_Pointeur = new JButton("Pointeur");
-	private JButton butt_Ligne = new JButton("Ligne");
+	private JButton butt_Pointeur = new JButton(new ImageIcon());
+	private JButton butt_Ligne = new JButton("BOY");
 	private JButton butt_Rectangle = new JButton("Rectangle");
 	private JButton butt_Oval = new JButton("Oval");
 	private Color m_CouleurTrait = Color.BLACK;
 	private Color m_Remplissage = null;
 	private int m_Trait = 1;
+	JPanel m_Background = new JPanel();
 	
 	public Dessin() {
 		super("Dessin Vectoriel");
 		this.m_EspaceTravail = new EspaceTravail(500, 500);
+		this.m_Observer.SetEnregistrement(m_EspaceTravail);
 		this.setSize(700, 700);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		//Initialisation des aspects visuels
 		this.setLayout(new BorderLayout());
 		JPanel buttons = new JPanel();
-		buttons.setLayout(new GridLayout(4,1));
+		Dimension dimensionButt = new Dimension(70, 50);
+		butt_Pointeur.setPreferredSize(dimensionButt);
+		butt_Ligne.setPreferredSize(dimensionButt);
+		butt_Rectangle.setPreferredSize(dimensionButt);
+		butt_Oval.setPreferredSize(dimensionButt);
+		buttons.setLayout(new GridLayout(7,1));
 		buttons.add(butt_Pointeur);
 		buttons.add(butt_Ligne);
 		buttons.add(butt_Rectangle);
 		buttons.add(butt_Oval);
 		this.add(buttons, BorderLayout.WEST);
-		JPanel background = new JPanel();
-		background.setLayout(new FlowLayout());
-		background.setBackground(Color.DARK_GRAY);
-		background.add((EspaceTravail)this.m_EspaceTravail);
-		this.add(background, BorderLayout.CENTER);
+		
+		this.m_Background.setLayout(new FlowLayout());
+		this.m_Background.setBackground(Color.DARK_GRAY);
+		this.m_Background.add((EspaceTravail)this.m_EspaceTravail);
+		this.add(this.m_Background, BorderLayout.CENTER);
+		JMenuBar menu = new JMenuBar();
+		JMenu fichier = new JMenu("Fichier");
+		JMenu edition = new JMenu("Édition");
+		JMenuItem nouveau = new JMenuItem("Nouveau");
+		JMenuItem sauvegarder = new JMenuItem("Sauvegarder");
+		JMenuItem charger = new JMenuItem("Charger");
+		JMenuItem exporter = new JMenuItem("Exporter");
+		JMenuItem ajouterLigne = new JMenuItem("Ajouter une ligne");
+		JMenuItem ajouterRectangle = new JMenuItem("Ajouter un rectangle");
+		JMenuItem ajouterOval = new JMenuItem("Ajouter un oval");
+		JMenuItem supprimer = new JMenuItem("Supprimer");
+		menu.add(fichier);
+		fichier.add(nouveau);
+		fichier.add(sauvegarder);
+		fichier.add(charger);
+		fichier.add(exporter);
+		menu.add(edition);
+		edition.add(ajouterLigne);
+		edition.add(ajouterRectangle);
+		edition.add(ajouterOval);
+		edition.add(supprimer);
+		this.add(menu, BorderLayout.NORTH);
 		//Events
 		this.m_EspaceTravail.ajouterMouseMotionListener(new Crayon());
 		this.m_EspaceTravail.ajouterMouseListener(new Pointeur());
@@ -68,16 +101,17 @@ public class Dessin extends JFrame implements IDessin{
 		this.butt_Rectangle.addActionListener(new Outils());
 		this.butt_Oval.addActionListener(new Outils());
 		this.addKeyListener(new Deleter());
+		nouveau.addActionListener(new Nouveau());
 	}
 	
 	@Override
 	public void CreerEspaceTravail(int p_Largeur, int p_Hauteur) {
-		if (VerifierModification()) {
-			this.m_EspaceTravail = new EspaceTravail(p_Largeur, p_Hauteur);
-		}
-		else {
-			
-		}
+		this.m_EspaceTravail.Vider();
+		this.m_EspaceTravail.setTaille(p_Largeur, p_Hauteur);
+		this.m_EspaceTravail.Deselectionner();
+		this.setSize(600, 600);
+		this.repaint();
+		this.m_Background.repaint();
 	}
 	
 	@Override
@@ -90,6 +124,7 @@ public class Dessin extends JFrame implements IDessin{
 		boolean confirm = true;
 		try {
 			this.m_Enregistrement.Enregistrer(this.m_EspaceTravail);
+			this.m_Observer.SetEnregistrement(this.m_EspaceTravail);
 		}
 		catch (Exception e){
 			confirm = false;
@@ -120,8 +155,14 @@ public class Dessin extends JFrame implements IDessin{
 
 	@Override
 	public boolean Exporter() {
-		// TODO Auto-generated method stub
-		return false;
+		boolean confirm = true;
+		try {
+			this.m_Exporteur.Exporter(this.m_EspaceTravail);
+		}
+		catch(Exception e){
+			confirm = false;
+		}
+		return confirm;
 	}
 
 	@Override
@@ -173,10 +214,14 @@ public class Dessin extends JFrame implements IDessin{
 					}
 					else {
 						Dessin.this.m_EspaceTravail.verifierClick(p_e.getX(), p_e.getY());
+						Dessin.this.m_EnModification = false;
+						Dessin.this.m_EnDeplacement = false;
 					}
 				}
 				else {
 					Dessin.this.m_EspaceTravail.verifierClick(p_e.getX(), p_e.getY());
+					Dessin.this.m_EnModification = false;
+					Dessin.this.m_EnDeplacement = false;
 				}
 				break;
 			case("Rectangle"):
@@ -186,7 +231,6 @@ public class Dessin extends JFrame implements IDessin{
 						Dessin.this.m_EspaceTravail.getLargeur()/5, 
 						Dessin.this.m_Trait, Dessin.this.m_CouleurTrait, 
 						Dessin.this.m_Remplissage));
-				Dessin.this.m_FormeCreation = "Pointeur";
 				break;
 			case("Oval"):
 				Dessin.this.m_EspaceTravail.Deselectionner();
@@ -196,13 +240,11 @@ public class Dessin extends JFrame implements IDessin{
 						Dessin.this.m_Trait, 
 						Dessin.this.m_CouleurTrait, 
 						Dessin.this.m_Remplissage));
-				Dessin.this.m_FormeCreation = "Pointeur";
 				break;
 			case("Ligne"):
 				Dessin.this.m_EspaceTravail.Deselectionner();
 				Dessin.this.AjouterForme(new Ligne(p_e.getX(), p_e.getY(), Dessin.this.m_EspaceTravail.getHauteur()/10, Dessin.this.m_EspaceTravail.getLargeur()/5, 
 						Dessin.this.m_Trait, Dessin.this.m_CouleurTrait, Dessin.this.m_Remplissage));
-				Dessin.this.m_FormeCreation = "Pointeur";
 			}
 		}
 
@@ -228,6 +270,7 @@ public class Dessin extends JFrame implements IDessin{
 			switch (outil) {
 			case ("Pointeur"):
 				Dessin.this.m_FormeCreation = "Pointeur";
+				Dessin.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				break;
 			case ("Ligne"):
 				Dessin.this.m_FormeCreation = "Ligne";
@@ -238,6 +281,31 @@ public class Dessin extends JFrame implements IDessin{
 			case("Oval"):
 				Dessin.this.m_FormeCreation = "Oval";
 				break;
+			}
+		}
+	}
+	
+	private class Nouveau implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent p_e) {
+			boolean creerNouveau = false;
+			if (Dessin.this.VerifierModification()) {
+				creerNouveau = true;
+			}
+			else {
+				int resp = JOptionPane.showConfirmDialog(
+					    Dessin.this,
+					    "Votre espace de travail n'est pas enregisté, voulez-vous continuer?",
+					    "Attention",
+					    JOptionPane.YES_NO_OPTION);
+					if(resp == JOptionPane.YES_OPTION) {
+						creerNouveau = true;
+					}
+			}
+			if (creerNouveau) {
+				
+				Dessin.this.CreerEspaceTravail(200, 200);
 			}
 		}
 	}
