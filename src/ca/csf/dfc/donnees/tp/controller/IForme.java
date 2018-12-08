@@ -18,7 +18,9 @@ public interface IForme extends Comparable<IForme>{
 	public int GetTrait();
 	public Color GetCouleur();
 	public Color GetRemplissage();
-	
+	public void ModifierCouleur(Color p_couleur);
+	public void ModifierTrait(int p_trait);
+	public void ModifierRemplisage(Color p_couleur);
 	
 	
 	
