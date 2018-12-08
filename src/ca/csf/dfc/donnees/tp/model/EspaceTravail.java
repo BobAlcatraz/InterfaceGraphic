@@ -209,7 +209,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		int verif= 0;
 		int rendu = 0;
 		for(IForme forme : o) {
-			if(this.m_ListForme.size() == rendu || !forme.equals(this.m_ListForme.get(rendu))) {
+			if(rendu >= this.m_ListForme.size() || !forme.equals(this.m_ListForme.get(rendu))) {
 				verif++;
 			}
 				rendu++;
