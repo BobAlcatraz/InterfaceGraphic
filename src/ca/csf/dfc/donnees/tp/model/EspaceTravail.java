@@ -41,9 +41,16 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 
 	@Override
 	public void supprimer() {
-		this.m_ListForme.remove(this.m_selectionne);
+		boolean enRecherche = true;
+		for (int x = 0; enRecherche && x < this.m_ListForme.size(); ++x) {
+			if (this.m_ListForme.get(x) == this.m_selectionne) {
+				this.m_ListForme.remove(x);
+				enRecherche = false;
+			}
+		}
 		this.m_selectionne = null;
 		this.m_point = null;
+		repaint();
 	}
 	
 	@Override
@@ -66,7 +73,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 			if(this.m_ListForme.get(i).isclicked(p_x, p_y)) {
 				this.m_selectionne = this.m_ListForme.get(i);
 				this.m_point = new Rectangle(this.m_selectionne.GetX() + this.m_selectionne.GetLargeur(), 
-						this.m_selectionne.GetY() + this.m_selectionne.GetHauteur(), 13, 13, 1, Color.white, Color.BLACK);
+						this.m_selectionne.GetY() + this.m_selectionne.GetHauteur(), 10, 10, 1, Color.white, Color.BLACK);
 				trouve = true;
 			}
 		}
@@ -83,7 +90,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		if (this.m_selectionne != null) {
 			this.m_selectionne.Modifier(this.m_selectionne.GetLargeur() + p_largeur, this.m_selectionne.GetHauteur() + p_hauteur);
 			this.m_selectionne.Deplacer(this.m_selectionne.GetX() +  p_x, this.m_selectionne.GetY() +  p_y);
-			this.m_point.Deplacer(this.m_point.GetX() +  (p_x == 0 ? p_largeur : p_x),this.m_point.GetY() +  (p_y == 0 ? p_hauteur : p_y));
+			this.m_point.Deplacer(this.m_point.GetX() +  (p_x == 0 ? p_largeur : p_x), this.m_point.GetY() +  (p_y == 0 ? p_hauteur : p_y));
 		}
 		this.repaint();
 	}
@@ -124,11 +131,15 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 			this.m_selectionne.Modifier(this.m_selectionne.GetLargeur(), this.m_selectionne.GetHauteur() * -1);
 			this.m_selectionne.Deplacer(this.m_selectionne.GetX(), y);
 		}
-		if (this.m_selectionne.GetLargeur() < 0) {
+		if (this.m_selectionne.GetLargeur() < 0 && this.m_selectionne.GetForme() != "ligne") {
 			int x = this.m_selectionne.GetX();
 			x += this.m_selectionne.GetLargeur();
 			this.m_selectionne.Modifier(this.m_selectionne.GetLargeur() * -1, this.m_selectionne.GetHauteur());
 			this.m_selectionne.Deplacer(x, this.m_selectionne.GetY());
+		}
+		if (this.m_selectionne.GetLargeur() < 0) {
+			this.m_selectionne.Deplacer(this.m_selectionne.GetX() + this.m_selectionne.GetLargeur(), this.m_selectionne.GetY() + this.m_selectionne.GetHauteur());
+			this.m_selectionne.Modifier(this.m_selectionne.GetLargeur() * -1, this.m_selectionne.GetHauteur() * -1);
 		}
 		this.m_point.Deplacer(this.m_selectionne.GetX() + this.m_selectionne.GetLargeur(), this.m_selectionne.GetY() + this.m_selectionne.GetHauteur());
 		this.repaint();
