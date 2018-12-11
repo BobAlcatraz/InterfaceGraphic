@@ -54,8 +54,7 @@ public class Rectangle extends Forme {
 
 	@Override
 	public String GetForme() {
-		return "rectangle";
-
+		return "Rectangle";
 	}
 
 	@Override

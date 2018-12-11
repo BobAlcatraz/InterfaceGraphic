@@ -23,7 +23,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	private IForme m_point;
 	
 	public EspaceTravail(int p_x, int p_y) {
-		super();
+		super(); 
 		this.setPreferredSize(new Dimension(p_x, p_y));
 	}
 	
