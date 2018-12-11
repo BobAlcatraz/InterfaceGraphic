@@ -32,6 +32,8 @@ public class ExporteurSVG implements IExporteur{
 		
 		return ExporteurSVG.m_Instance;
 	}
+	
+	// EXPORTAGE
 	public void Exporter(IEspaceTravail p_EspaceTravail) 
 	{
 		PrintWriter doc = null;
@@ -69,6 +71,8 @@ public class ExporteurSVG implements IExporteur{
     	JFileChooser chooser = new JFileChooser();
     		FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichiers svg (*.svg)","svg");
     		chooser.setFileFilter(filtre);
+    		
+    	// Windows
     	/*  chooser.setCurrentDirectory(new File("/home/%username%/Documents"));
    		int valRetournee = chooser.showOpenDialog(null); */
     		
@@ -91,16 +95,16 @@ public class ExporteurSVG implements IExporteur{
 		
 		for(IForme forme: p_EspaceTravail) {
 
-			if(forme instanceof Oval) 
+			if(forme.GetForme() == "oval") 
 
 			{
 				ecritureFormatSVGDeOvale(p_Doc, (Oval)forme);
 			}
-			else if(forme instanceof Rectangle) 
+			else if(forme.GetForme() == "rectangle") 
 			{
 				ecritureFormatSVGDeRectangle(p_Doc, (Rectangle)forme);
 			}
-			else if(forme instanceof IForme) 
+			else if(forme.GetForme() == "ligne") 
 			{
 				ecritureFormatSVGDeLigne(p_Doc, forme);
 			}
@@ -113,9 +117,10 @@ public class ExporteurSVG implements IExporteur{
 		Integer rx = p_Ovale.GetLargeur()/2;
 		Integer ry = p_Ovale.GetHauteur()/2;
 		//Style (couleurs rgb)
-		Integer fillRed     = p_Ovale.GetRemplissage().getRed(); // Ce serait pertinant d'avoir ces fonctions directement dans forme. (respect des regles)
-		Integer fillGreen   = p_Ovale.GetRemplissage().getGreen();
-		Integer fillBlue    = p_Ovale.GetRemplissage().getBlue();
+		Integer fillRed     = p_Ovale.GetRemplissage() != null ? p_Ovale.GetRemplissage().getRed() : 0; // Ce serait pertinant d'avoir ces fonctions directement dans forme. (respect des regles)
+		Integer fillGreen   = p_Ovale.GetRemplissage() != null ? p_Ovale.GetRemplissage().getGreen() : 0;
+		Integer fillBlue    = p_Ovale.GetRemplissage() != null ? p_Ovale.GetRemplissage().getBlue() : 0;
+		double fillOpacity = p_Ovale.GetRemplissage() != null ? 1.0 : 0.0;
 		Integer strokeRed   = p_Ovale.GetCouleur().getRed();
 		Integer strokeGreen = p_Ovale.GetCouleur().getGreen();
 		Integer strokeBlue  = p_Ovale.GetCouleur().getBlue();
@@ -123,6 +128,7 @@ public class ExporteurSVG implements IExporteur{
 		
 		p_Doc.println("	<ellipse cx=\""+ cx +"\" cy=\""+ cy +"\" rx=\""+ rx +"\" ry=\""+ ry +"\"\r"
 				    + " style=\"fill:rgb("+ fillRed +", "+ fillGreen +", "+ fillBlue+ ");"
+				    + " fill-opacity:" + fillOpacity + ";"
 				    		 + "stroke:rgb("+ strokeRed +", "+ strokeGreen +", "+ strokeBlue +");"
 				    		 + "stroke-width:"+ strokeWidth +"\" />");
 	}
@@ -133,9 +139,10 @@ public class ExporteurSVG implements IExporteur{
 		Integer width  = p_Rectangle.GetLargeur();
 		Integer height = p_Rectangle.GetHauteur();
 		//Style (couleurs rgb)
-		Integer fillRed     = p_Rectangle.GetRemplissage().getRed(); 
-		Integer fillGreen   = p_Rectangle.GetRemplissage().getGreen();
-		Integer fillBlue    = p_Rectangle.GetRemplissage().getBlue();
+		Integer fillRed     = p_Rectangle.GetRemplissage() != null ? p_Rectangle.GetRemplissage().getRed() : 0; 
+		Integer fillGreen   = p_Rectangle.GetRemplissage() != null ? p_Rectangle.GetRemplissage().getGreen() : 0;
+		Integer fillBlue    = p_Rectangle.GetRemplissage() != null ? p_Rectangle.GetRemplissage().getBlue() : 0;
+		double 	fillOpacity =  p_Rectangle.GetRemplissage() != null ? 1.0 : 0.0;
 		Integer strokeRed   = p_Rectangle.GetCouleur().getRed();
 		Integer strokeGreen = p_Rectangle.GetCouleur().getGreen();
 		Integer strokeBlue  = p_Rectangle.GetCouleur().getBlue();
@@ -143,9 +150,10 @@ public class ExporteurSVG implements IExporteur{
 		
 		
 		p_Doc.println("	<rect x=\""+ x +"\" y=\""+ y +"\" width=\""+ width +"\" height=\""+ height +"\" "
-				     + " style=\"fill:rgb("+ fillRed +", "+ fillGreen +", "+ fillBlue+ ");"
-		    		          + "stroke:rgb("+ strokeRed +", "+ strokeGreen +", "+ strokeBlue +");"
-		    		          + "stroke-width:"+ strokeWidth +"\" />");
+			     + " style=\"fill:rgb("+ fillRed +", "+ fillGreen +", "+ fillBlue+ ");"
+			     + " fill-opacity:" + fillOpacity + ";"
+	    		          + "stroke:rgb("+ strokeRed +", "+ strokeGreen +", "+ strokeBlue +");"
+	    		          + "stroke-width:"+ strokeWidth +"\" />");
 	}
 	
 	private void ecritureFormatSVGDeLigne(PrintWriter p_Doc, IForme p_Ligne) {

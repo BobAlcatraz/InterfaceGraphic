@@ -13,7 +13,7 @@ public class Observer implements IObserver{
 
 	@Override
 	public void SetEnregistrement(IEspaceTravail p_EspaceTravail) {
-		this.m_Enregistrement = p_EspaceTravail;
+		this.m_Enregistrement = p_EspaceTravail.GetCopie();
 	}
 
 }

@@ -1,5 +1,6 @@
 package ca.csf.dfc.donnees.tp.model;
 
+import java.awt.Color;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
@@ -32,4 +33,15 @@ public interface IEspaceTravail extends Comparable<IEspaceTravail>, Iterable<IFo
 	public void Deselectionner();
 	
 	public void Vider();
+	
+	public void AdapterForme();
+	
+	public IEspaceTravail GetCopie();
+	
+	public void ChangerRemplissage(Color p_couleur);
+	
+	public void ChangerCouleur(Color p_couleur);
+	
+	public void ChangerTrait(int p_grosseur);
+	
 }

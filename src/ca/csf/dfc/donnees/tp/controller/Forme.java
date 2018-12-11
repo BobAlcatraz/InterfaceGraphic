@@ -20,7 +20,15 @@ abstract class Forme implements IForme {
 	protected abstract void setCouleur(Color p_Couleur);
 	protected abstract void setRemplissage(Color p_Remplissage);
 	
-	
+	@Override
+	public boolean equals(Object p_O) {
+		if(!(p_O instanceof IForme) || this.compareTo((IForme)p_O) != 0) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
 	
 
 }

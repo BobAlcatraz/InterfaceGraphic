@@ -16,6 +16,16 @@ public class Rectangle extends Forme {
 		
 	}
 	
+	public Rectangle(IForme p_Rectangle) {
+		this.m_X = p_Rectangle.GetX();
+		this.m_Y = p_Rectangle.GetY();
+		this.m_Hauteur = p_Rectangle.GetHauteur();
+		this.m_Largeur = p_Rectangle.GetLargeur();
+		this.m_Trait = p_Rectangle.GetTrait();
+		this.m_Couleur = p_Rectangle.GetCouleur();
+		this.m_Remplissage = p_Rectangle.GetRemplissage();
+	}
+	
 	
 	
 	@Override
@@ -45,7 +55,6 @@ public class Rectangle extends Forme {
 	@Override
 	public String GetForme() {
 		return "rectangle";
-
 	}
 
 	@Override
@@ -137,6 +146,31 @@ public class Rectangle extends Forme {
 	@Override
 	protected void setRemplissage(Color p_Remplissage) {
 		this.m_Remplissage = p_Remplissage;
+	}
+	
+	@Override
+	public void ModifierCouleur(Color p_couleur) {
+		this.m_Couleur = p_couleur;
+		
+	}
+
+	@Override
+	public void ModifierTrait(int p_trait) {
+		this.m_Trait = p_trait;
+		
+	}
+
+	@Override
+	public void ModifierRemplisage(Color p_couleur) {
+		this.m_Remplissage = p_couleur;
+		
+	}
+
+
+
+	@Override
+	public IForme GetCopie() {
+		return new Rectangle(this);
 	}
 
 

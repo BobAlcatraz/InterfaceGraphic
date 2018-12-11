@@ -8,5 +8,6 @@ public interface IDessin {
 	public boolean Sauvegarder();
 	public boolean Charger();
 	public boolean Exporter();
+	public void Supprimer();
 	public void AjouterForme(IForme p_Forme);
 }
