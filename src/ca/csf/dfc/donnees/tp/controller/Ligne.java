@@ -17,6 +17,16 @@ public class Ligne extends Forme{
 		
 	}
 	
+	public Ligne(IForme p_Ligne) {
+		this.m_X = p_Ligne.GetX();
+		this.m_Y = p_Ligne.GetY();
+		this.m_Hauteur = p_Ligne.GetHauteur();
+		this.m_Largeur = p_Ligne.GetLargeur();
+		this.m_Trait = p_Ligne.GetTrait();
+		this.m_Couleur = p_Ligne.GetCouleur();
+		this.m_Remplissage = p_Ligne.GetRemplissage();
+	}
+	
 	@Override
 	public Boolean isclicked(int p_X, int p_Y) {
 		
@@ -24,6 +34,7 @@ public class Ligne extends Forme{
 		int y1 = this.m_Y;
 		int x2 = (x1 + this.m_Largeur);
 		int y2 = (y1 - this.m_Hauteur);
+			
 		Boolean retour = false;		
 		
 		double a = ((y2-y1)/(x2-x1));		
@@ -45,7 +56,14 @@ public class Ligne extends Forme{
 			}
 						
 		}
-		else if (((p_X >= x1)&&(p_X <= x2))&&((p_Y >= y2)&&(p_Y <= y1))) {
+		else if ((this.m_Hauteur > 0) && ((p_X >= x1)&&(p_X <= x2))&&((p_Y >= y2)&&(p_Y <= y1))) {
+			
+			if((p_Y >= ((a * p_X + b) - 20)) && (p_Y <= ((a * p_X + b) + 20))) {
+				retour = true;
+			}
+			
+		}
+		else if ((this.m_Hauteur < 0) && ((p_X >= x1)&&(p_X <= x2))&&((p_Y <= y2)&&(p_Y >= y1))) {
 			
 			if((p_Y >= ((a * p_X + b) - 20)) && (p_Y <= ((a * p_X + b) + 20))) {
 				retour = true;
@@ -53,6 +71,9 @@ public class Ligne extends Forme{
 			
 		}
 				
+		
+		
+
 		return retour;
 		
 	}
@@ -161,6 +182,10 @@ public class Ligne extends Forme{
 	}
 
 	@Override
+	public IForme GetCopie() {
+		return new Ligne(this);
+  }
+  
 	public void ModifierCouleur(Color p_couleur) {
 		this.m_Couleur = p_couleur;
 		
@@ -175,12 +200,5 @@ public class Ligne extends Forme{
 	@Override
 	public void ModifierRemplisage(Color p_couleur) {
 		this.m_Remplissage = p_couleur;
-		
 	}
-
-	
-	
-	
-	
-	
 }
