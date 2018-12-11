@@ -9,6 +9,7 @@ public interface IForme extends Comparable<IForme>{
 	public void Deplacer(int p_X, int p_Y);
 	public void Modifier(int p_Largeur, int p_Hauteur);
 	public String GetForme();
+	public IForme GetCopie();
 	
 	public int GetX();
 	public int GetY();

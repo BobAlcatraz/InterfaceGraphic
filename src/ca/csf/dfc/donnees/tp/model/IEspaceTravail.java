@@ -34,4 +34,6 @@ public interface IEspaceTravail extends Comparable<IEspaceTravail>, Iterable<IFo
 	public void Vider();
 	
 	public void AdapterForme();
+	
+	public IEspaceTravail GetCopie();
 }

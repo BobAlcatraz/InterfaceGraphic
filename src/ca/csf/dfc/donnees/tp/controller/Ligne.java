@@ -17,6 +17,16 @@ public class Ligne extends Forme{
 		
 	}
 	
+	public Ligne(IForme p_Ligne) {
+		this.m_X = p_Ligne.GetX();
+		this.m_Y = p_Ligne.GetY();
+		this.m_Hauteur = p_Ligne.GetHauteur();
+		this.m_Largeur = p_Ligne.GetLargeur();
+		this.m_Trait = p_Ligne.GetTrait();
+		this.m_Couleur = p_Ligne.GetCouleur();
+		this.m_Remplissage = p_Ligne.GetRemplissage();
+	}
+	
 	@Override
 	public Boolean isclicked(int p_X, int p_Y) {
 		
@@ -161,6 +171,10 @@ public class Ligne extends Forme{
 	}
 
 	@Override
+	public IForme GetCopie() {
+		return new Ligne(this);
+  }
+  
 	public void ModifierCouleur(Color p_couleur) {
 		this.m_Couleur = p_couleur;
 		
@@ -175,12 +189,5 @@ public class Ligne extends Forme{
 	@Override
 	public void ModifierRemplisage(Color p_couleur) {
 		this.m_Remplissage = p_couleur;
-		
 	}
-
-	
-	
-	
-	
-	
 }

@@ -27,16 +27,30 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		this.setPreferredSize(new Dimension(p_x, p_y));
 	}
 	
+	public EspaceTravail(EspaceTravail p_ES) {
+		this.setPreferredSize(new Dimension(p_ES.getWidth(), p_ES.getHeight()));
+		for (IForme forme : p_ES) {
+			this.m_ListForme.add(forme.GetCopie());
+		}
+	}
+	
 	@Override
 	public void setTaille(int p_x, int p_y) {
-		this.setSize(p_x, p_y);
+		this.setPreferredSize(new Dimension(p_x, p_y));
 	}
 
 	@Override
 	public void supprimer() {
-		this.m_ListForme.remove(this.m_selectionne);
+		boolean enRecherche = true;
+		for (int x = 0; enRecherche && x < this.m_ListForme.size(); ++x) {
+			if (this.m_ListForme.get(x) == this.m_selectionne) {
+				this.m_ListForme.remove(x);
+				enRecherche = false;
+			}
+		}
 		this.m_selectionne = null;
 		this.m_point = null;
+		repaint();
 	}
 	
 	@Override
@@ -59,7 +73,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 			if(this.m_ListForme.get(i).isclicked(p_x, p_y)) {
 				this.m_selectionne = this.m_ListForme.get(i);
 				this.m_point = new Rectangle(this.m_selectionne.GetX() + this.m_selectionne.GetLargeur(), 
-						this.m_selectionne.GetY() + this.m_selectionne.GetHauteur(), 13, 13, 1, Color.white, Color.BLACK);
+						this.m_selectionne.GetY() + this.m_selectionne.GetHauteur(), 10, 10, 1, Color.white, Color.BLACK);
 				trouve = true;
 			}
 		}
@@ -76,7 +90,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		if (this.m_selectionne != null) {
 			this.m_selectionne.Modifier(this.m_selectionne.GetLargeur() + p_largeur, this.m_selectionne.GetHauteur() + p_hauteur);
 			this.m_selectionne.Deplacer(this.m_selectionne.GetX() +  p_x, this.m_selectionne.GetY() +  p_y);
-			this.m_point.Deplacer(this.m_point.GetX() +  (p_x == 0 ? p_largeur : p_x),this.m_point.GetY() +  (p_y == 0 ? p_hauteur : p_y));
+			this.m_point.Deplacer(this.m_point.GetX() +  (p_x == 0 ? p_largeur : p_x), this.m_point.GetY() +  (p_y == 0 ? p_hauteur : p_y));
 		}
 		this.repaint();
 	}
@@ -84,13 +98,13 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	@Override
 	public int getLargeur() {
 	
-		return this.getWidth();
+		return this.getPreferredSize().width;
 	}
 
 	@Override
 	public int getHauteur() {
 		
-		return this.getHeight();
+		return this.getPreferredSize().height;
 	}
 	
 	@Override
@@ -111,17 +125,21 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	
 	@Override
 	public void AdapterForme() {
-		if (this.m_selectionne.GetHauteur() < 0) {
+		if (this.m_selectionne.GetHauteur() < 0 && this.m_selectionne.GetForme() != "ligne") {
 			int y = this.m_selectionne.GetY();
 			y += this.m_selectionne.GetHauteur();
 			this.m_selectionne.Modifier(this.m_selectionne.GetLargeur(), this.m_selectionne.GetHauteur() * -1);
 			this.m_selectionne.Deplacer(this.m_selectionne.GetX(), y);
 		}
-		if (this.m_selectionne.GetLargeur() < 0) {
+		if (this.m_selectionne.GetLargeur() < 0 && this.m_selectionne.GetForme() != "ligne") {
 			int x = this.m_selectionne.GetX();
 			x += this.m_selectionne.GetLargeur();
 			this.m_selectionne.Modifier(this.m_selectionne.GetLargeur() * -1, this.m_selectionne.GetHauteur());
 			this.m_selectionne.Deplacer(x, this.m_selectionne.GetY());
+		}
+		if (this.m_selectionne.GetLargeur() < 0) {
+			this.m_selectionne.Deplacer(this.m_selectionne.GetX() + this.m_selectionne.GetLargeur(), this.m_selectionne.GetY() + this.m_selectionne.GetHauteur());
+			this.m_selectionne.Modifier(this.m_selectionne.GetLargeur() * -1, this.m_selectionne.GetHauteur() * -1);
 		}
 		this.m_point.Deplacer(this.m_selectionne.GetX() + this.m_selectionne.GetLargeur(), this.m_selectionne.GetY() + this.m_selectionne.GetHauteur());
 		this.repaint();
@@ -167,7 +185,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 					case "rectangle" :
 						graph.drawRect(laForme.GetX()-2, laForme.GetY()-2, laForme.GetLargeur()+5, laForme.GetHauteur()+5);
 						graph.setColor(this.m_point.GetRemplissage());
-						graph.fillOval(this.m_point.GetX()+2, this.m_point.GetY()+2, this.m_point.GetLargeur(), this.m_point.GetHauteur());
+						graph.fillOval(this.m_point.GetX(), this.m_point.GetY(), this.m_point.GetLargeur(), this.m_point.GetHauteur());
 						break;
 					case "oval" :
 						graph.drawRect(laForme.GetX()-2, laForme.GetY()-2, laForme.GetLargeur()+5, laForme.GetHauteur()+5);
@@ -177,9 +195,9 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 					case "ligne" :
 						int pointx2 = forme.GetX() + forme.GetLargeur();
 						int pointy2 = forme.GetY() + forme.GetHauteur();
-						graph.setColor(Color.black);
-						graph.drawLine(forme.GetX()+2, forme.GetY()+2, pointx2+2, pointy2+2);
-						graph.fillOval(pointx2 + 2, pointy2 + 2, this.m_point.GetLargeur(), this.m_point.GetHauteur());
+						graph.drawLine(this.m_selectionne.GetX(), this.m_selectionne.GetY(), pointx2, pointy2);
+						graph.setColor(this.m_point.GetRemplissage());
+						graph.fillOval(this.m_point.GetX(), this.m_point.GetY(), this.m_point.GetLargeur(), this.m_point.GetHauteur());
 						break;
 					}
 				}
@@ -219,12 +237,22 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		int verif= 0;
 		int rendu = 0;
 		for(IForme forme : o) {
-			if(forme != this.m_ListForme.get(rendu)) {
+			if(rendu >= this.m_ListForme.size() || !forme.equals(this.m_ListForme.get(rendu))) {
 				verif++;
 			}
 				rendu++;
 		}
 		return verif;
+	}
+	
+	@Override
+	public boolean equals(Object p_ET) {
+		if (!(p_ET instanceof EspaceTravail) || this.compareTo((EspaceTravail)p_ET) != 0) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 	@Override
@@ -232,6 +260,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		
 		return new EspaceIterator();
 	}
+	
 	private class EspaceIterator implements Iterator<IForme>{
 
 		private int m_cible;
@@ -257,5 +286,10 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 			return forme;
 		}
 		
+	}
+
+	@Override
+	public IEspaceTravail GetCopie() {
+		return new EspaceTravail(this);
 	}
 }
