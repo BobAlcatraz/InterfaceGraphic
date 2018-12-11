@@ -7,6 +7,7 @@ import java.awt.Color;
 import org.junit.jupiter.api.Test;
 
 import ca.csf.dfc.donnees.tp.controller.Ligne;
+import ca.csf.dfc.donnees.tp.controller.Rectangle;
 
 class LigneTest {
 
@@ -15,7 +16,7 @@ class LigneTest {
 		Ligne test = new Ligne(1, 1, 1, 1, 1, null, null);	
 		
 		assertEquals(test.GetX(), 1);		
-		test.Deplacer(3, 0);
+		test.Deplacer(3,0);
 		assertEquals(test.GetX(), 3);
 		
 	}
@@ -98,7 +99,7 @@ class LigneTest {
 	}
 
 	@Test
-	void testIsclicked() {
+	void testIsclickedHauteurPos() {
 		Ligne test = new Ligne(10, 92, 24, 30, 2, null, null);	
 		
 		assertTrue(test.isclicked(15, 88));
@@ -108,6 +109,20 @@ class LigneTest {
 		
 		assertFalse(test.isclicked(37, 108));	
 		assertFalse(test.isclicked(-5, 68));
+		assertFalse(test.isclicked(1000, 1000));
+	}
+	
+	@Test
+	void testIsclickedHauteurNeg() {
+		Ligne test = new Ligne(4, 16, -12, 8, 2, null, null);	
+		
+		assertTrue(test.isclicked(6, 19));
+		assertTrue(test.isclicked(8, 22));	
+		assertTrue(test.isclicked(4, 18));
+		assertTrue(test.isclicked(8, 20));	
+		
+		assertFalse(test.isclicked(-12, 2));	
+		assertFalse(test.isclicked(26, 42));
 		assertFalse(test.isclicked(1000, 1000));
 	}
 
@@ -141,7 +156,21 @@ class LigneTest {
 	@Test
 	void testCompareTo() {
 		Ligne test = new Ligne(1, 1, 1, 1, 1, null, null);	
+		Rectangle test2 = new Rectangle(1, 1, 1, 1, 1, null, null);
+		Ligne test3 = new Ligne(1, 1, 1, 1, 1, null, null);	
+		Rectangle test4 = new Rectangle(1, 1, 1, 1, 1, null, null);
 		
+		Ligne test5 = new Ligne(1, 1, 3, 1, 1, null, null);	
+		Rectangle test6 = new Rectangle(1, 1, 1, 3, 1, null, null);
+		
+		assertEquals(test.compareTo(test3), 0);
+		assertEquals(test.compareTo(test2), -1);
+		
+		assertEquals(test2.compareTo(test4), 0);
+		assertEquals(test2.compareTo(test), -1);
+		
+		assertEquals(test.compareTo(test5), -1);
+		assertEquals(test2.compareTo(test6), -1);
 		
 	}
 

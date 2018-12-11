@@ -170,7 +170,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 				}
 					
 			}
-			else if(forme.GetRemplissage() == null) {
+
 			switch(sorteForme) {
 			case "rectangle" :
 				graph.setColor(forme.GetCouleur());
@@ -217,7 +217,6 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 									break;
 							}
 					}
-				}
 		}
 	}
 	
