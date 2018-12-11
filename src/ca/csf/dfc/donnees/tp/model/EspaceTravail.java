@@ -153,13 +153,11 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		graph.fillRect(0, 0, this.getWidth(), this.getHeight());
 		for (IForme forme : this.m_ListForme) {
 			String sorteForme = forme.GetForme();
-			
-			
 			if(forme.GetRemplissage() != null) {
 				switch (sorteForme) {
 				case "rectangle":
-					graph.fillRect(forme.GetX(), forme.GetY(), forme.GetLargeur(), forme.GetHauteur());
 					graph.setColor(forme.GetRemplissage());
+					graph.fillRect(forme.GetX(), forme.GetY(), forme.GetLargeur(), forme.GetHauteur());
 					graph.setStroke(new BasicStroke( forme.GetTrait()));
 					break;
 				case "oval" :
@@ -170,7 +168,6 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 				}
 					
 			}
-
 			switch(sorteForme) {
 			case "rectangle" :
 				graph.setColor(forme.GetCouleur());
@@ -217,6 +214,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 									break;
 							}
 					}
+				
 		}
 	}
 	
