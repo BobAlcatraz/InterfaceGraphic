@@ -25,6 +25,16 @@ public class Oval extends Forme {
 		this.m_Remplissage=p_Remplossage;
 
 	}
+	
+	public Oval(IForme p_Oval) {
+		this.m_X = p_Oval.GetX();
+		this.m_Y = p_Oval.GetY();
+		this.m_Hauteur = p_Oval.GetHauteur();
+		this.m_Largeur = p_Oval.GetLargeur();
+		this.m_Trait = p_Oval.GetTrait();
+		this.m_Couleur = p_Oval.GetCouleur();
+		this.m_Remplissage = p_Oval.GetRemplissage();
+	}
 
 	@Override
 	public Boolean isclicked(int p_X, int p_Y) {
@@ -32,7 +42,7 @@ public class Oval extends Forme {
 		int demiH = this.m_Hauteur / 2;
 		int demiL = this.m_Largeur / 2;
 		int centreX = this.m_X +demiL;
-		int centreY = this.m_Y -demiH;
+		int centreY = this.m_Y +demiH;
 		
 
 		return ((int) Math.pow((p_X - centreX), 2) / (int) Math.pow(demiH, 2))
@@ -160,6 +170,29 @@ public class Oval extends Forme {
 	protected void setRemplissage(Color p_Remplissage) {
 		this.m_Remplissage = p_Remplissage;
 
+	}
+	
+	@Override
+	public void ModifierCouleur(Color p_couleur) {
+		this.m_Couleur = p_couleur;
+		
+	}
+
+	@Override
+	public void ModifierTrait(int p_trait) {
+		this.m_Trait = p_trait;
+		
+	}
+
+	@Override
+	public void ModifierRemplisage(Color p_couleur) {
+		this.m_Remplissage = p_couleur;
+		
+	}
+
+	@Override
+	public IForme GetCopie() {
+		return new Oval(this);
 	}
 
 }

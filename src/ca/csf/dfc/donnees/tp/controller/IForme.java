@@ -9,6 +9,7 @@ public interface IForme extends Comparable<IForme>{
 	public void Deplacer(int p_X, int p_Y);
 	public void Modifier(int p_Largeur, int p_Hauteur);
 	public String GetForme();
+	public IForme GetCopie();
 	
 	public int GetX();
 	public int GetY();
@@ -17,7 +18,9 @@ public interface IForme extends Comparable<IForme>{
 	public int GetTrait();
 	public Color GetCouleur();
 	public Color GetRemplissage();
-	
+	public void ModifierCouleur(Color p_couleur);
+	public void ModifierTrait(int p_trait);
+	public void ModifierRemplisage(Color p_couleur);
 	
 	
 	

@@ -1,10 +1,11 @@
 package ca.csf.dfc.donnees.tp.controller;
+
 import java.awt.Color;
 
-public class Rectangle extends Forme {
+public class Ligne extends Forme{
 
 	
-	public Rectangle(int p_X, int p_Y, int p_Hauteur, int p_Largeur, int p_Trait, Color p_Couleur, Color p_Remplissage) {
+	public Ligne(int p_X, int p_Y, int p_Hauteur, int p_Largeur, int p_Trait, Color p_Couleur, Color p_Remplissage) {
 		
 		this.m_X = p_X;
 		this.m_Y = p_Y;
@@ -16,45 +17,71 @@ public class Rectangle extends Forme {
 		
 	}
 	
-	public Rectangle(IForme p_Rectangle) {
-		this.m_X = p_Rectangle.GetX();
-		this.m_Y = p_Rectangle.GetY();
-		this.m_Hauteur = p_Rectangle.GetHauteur();
-		this.m_Largeur = p_Rectangle.GetLargeur();
-		this.m_Trait = p_Rectangle.GetTrait();
-		this.m_Couleur = p_Rectangle.GetCouleur();
-		this.m_Remplissage = p_Rectangle.GetRemplissage();
+	public Ligne(IForme p_Ligne) {
+		this.m_X = p_Ligne.GetX();
+		this.m_Y = p_Ligne.GetY();
+		this.m_Hauteur = p_Ligne.GetHauteur();
+		this.m_Largeur = p_Ligne.GetLargeur();
+		this.m_Trait = p_Ligne.GetTrait();
+		this.m_Couleur = p_Ligne.GetCouleur();
+		this.m_Remplissage = p_Ligne.GetRemplissage();
 	}
-	
-	
 	
 	@Override
 	public Boolean isclicked(int p_X, int p_Y) {
-			
+		
 		int x1 = this.m_X;
 		int y1 = this.m_Y;
 		int x2 = (x1 + this.m_Largeur);
-		int y2 = (y1 + this.m_Hauteur);
+		int y2 = (y1 - this.m_Hauteur);
+		Boolean retour = false;		
+		
+		double a = ((y2-y1)/(x2-x1));		
+		double b = -((a*x2)-y2);
+	
+		
+		
+		if((y1 == y2) && ((p_Y >= (y1 - 20)) && (p_Y <= (y1 + 20)))) {
 			
-		return (((p_X >= x1)&&(p_X <= x2))&&((p_Y <= y2)&&(p_Y >= y1)));				
+			if(((p_X >= (x1 - 20)) && (p_X <= (x2 + 20)))) {
+				retour = true;
+			}
+			
+		}
+		else if((x1 == x2) && ((p_X >= (x1 - 20)) && (p_X <= (x1 + 20)))) {
+			
+			if(((p_Y >= (y1 - 20)) && (p_Y <= (y2 + 20)))) {
+				retour = true;
+			}
+						
+		}
+		else if (((p_X >= x1)&&(p_X <= x2))&&((p_Y >= y2)&&(p_Y <= y1))) {
+			
+			if((p_Y >= ((a * p_X + b) - 20)) && (p_Y <= ((a * p_X + b) + 20))) {
+				retour = true;
+			}
+			
+		}
+				
+		return retour;
+		
 	}
 
 	@Override
-	public void Deplacer(int x, int y) {
-		this.setX(x);
-		this.setY(y);
-		
+	public void Deplacer(int p_X, int p_Y) {
+		this.setX(p_X);
+		this.setY(p_Y);		
 	}
 
 	@Override
 	public void Modifier(int p_Largeur, int p_Hauteur) {
 		this.setLargeur(p_Largeur);
-		this.setHauteur(p_Hauteur);
+		this.setHauteur(p_Hauteur);	
 	}
 
 	@Override
 	public String GetForme() {
-		return "Rectangle";
+		return "ligne";
 	}
 
 	@Override
@@ -94,7 +121,6 @@ public class Rectangle extends Forme {
 
 	@Override
 	public int compareTo(IForme o) {
-		
 		int retour = -1;
 		
 		if ((this.m_X == o.GetX()) && (this.m_Y == o.GetY()) &&
@@ -110,25 +136,21 @@ public class Rectangle extends Forme {
 	@Override
 	protected void setX(int p_X) {
 		this.m_X = p_X;
-		
 	}
 
 	@Override
 	protected void setY(int p_Y) {
-		this.m_Y = p_Y;
-		
+		this.m_Y = p_Y;	
 	}
 
 	@Override
 	protected void setHauteur(int p_Hauteur) {
-		this.m_Hauteur = p_Hauteur;
-		
+		this.m_Hauteur = p_Hauteur;	
 	}
 
 	@Override
 	protected void setLargeur(int p_Largeur) {
 		this.m_Largeur = p_Largeur;
-		
 	}
 
 	@Override
@@ -139,16 +161,20 @@ public class Rectangle extends Forme {
 
 	@Override
 	protected void setCouleur(Color p_Couleur) {
-		this.m_Couleur = p_Couleur;
-		
+		this.m_Couleur = p_Couleur;	
 	}
 
 	@Override
 	protected void setRemplissage(Color p_Remplissage) {
 		this.m_Remplissage = p_Remplissage;
+		
 	}
-	
+
 	@Override
+	public IForme GetCopie() {
+		return new Ligne(this);
+  }
+  
 	public void ModifierCouleur(Color p_couleur) {
 		this.m_Couleur = p_couleur;
 		
@@ -163,17 +189,5 @@ public class Rectangle extends Forme {
 	@Override
 	public void ModifierRemplisage(Color p_couleur) {
 		this.m_Remplissage = p_couleur;
-		
 	}
-
-
-
-	@Override
-	public IForme GetCopie() {
-		return new Rectangle(this);
-	}
-
-
-	
-	
 }
