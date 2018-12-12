@@ -452,7 +452,11 @@ public class Dessin extends JFrame implements IDessin{
 			}
 			if (creerNouveau) {
 				if (((JMenuItem)p_e.getSource()).getText() == "Nouveau") {
-					Dessin.this.CreerEspaceTravail(200, 200);
+					FenetreDimensionEspace dialog = new FenetreDimensionEspace(Dessin.this);
+					dialog.setVisible(true);
+					if (dialog.getResultatDialogue()) {
+						Dessin.this.CreerEspaceTravail(dialog.getLargeurChoisie(), dialog.getHauteurChoisie());
+					}	
 				}
 				else {
 					Dessin.this.Charger();
