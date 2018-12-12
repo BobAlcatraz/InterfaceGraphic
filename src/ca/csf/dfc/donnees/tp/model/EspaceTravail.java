@@ -222,7 +222,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	
 	
 	public void ChangerRemplissage(Color p_couleur) {
-		this.m_selectionne.ModifierRemplisage(p_couleur);
+		this.m_selectionne.ModifierRemplissage(p_couleur);
 	}
 	
 	public void ChangerCouleur(Color p_couleur) {
