@@ -11,15 +11,9 @@ import javax.xml.stream.*;
 import ca.csf.dfc.donnees.tp.model.*;
 
 /**
+ * Classe permettant l'enregistrement et le chargement d'un espace de travail sous format XML
  * @author JBrazeau
- *    
- *Notes: .getForme() static?
- *    static finale string TYPE_FORME 
- *Me permetterait d'éviter un instanceOf 
- *Je sais pas si c'est pertinent
- *Ça pourrait être utile, puisque c'est une valeur finale
- *Et qu'elle permetterait de recuillir la valeur du type sans instancier d'objet.
- *
+ * 
  */
 public class EnregistrementXML implements IEnregistrement {
 	static private EnregistrementXML m_Instance = null; 
@@ -42,10 +36,18 @@ public class EnregistrementXML implements IEnregistrement {
     private final static String ATTR_COULEUR_TRAIT       = "coultrait";
     private final static String ATTR_COULEUR_REMPLISSAGE = "coulremplissage";
     
+    /**
+     * Constructeur par défaut.
+     * Associe l'instance à m_Instance.
+     */
     private EnregistrementXML(){
     	EnregistrementXML.m_Instance = this;
     }
     
+    /**
+     * Retourne l'instance existante ou nouvellement créée.
+     * @return l'instance
+     */
     static public EnregistrementXML getInstance() {
     	if(EnregistrementXML.m_Instance == null) {
     		new EnregistrementXML();
@@ -55,6 +57,11 @@ public class EnregistrementXML implements IEnregistrement {
     }
     
 	// ENREGISTREMENT
+    
+    /**
+     * Enregistre un espace de travail dans un fichier format xml.
+     * @param p_EspaceAEnregistrer l'espace de travail 
+     */
     public void Enregistrer(IEspaceTravail p_EspaceAEnregistrer) 
     {
         XMLStreamWriter doc = null;
@@ -116,6 +123,11 @@ public class EnregistrementXML implements IEnregistrement {
         }
 	}
     
+    /**
+     * Permet d'avoir un FileWriter avec l'extension xml par l'entremise d'un JFileChooser
+     * @return Le FileWriter
+     * @throws IOException Si le JFIleChooser est annulé ou le nom de fichier est d'un format inadéquat.
+     */
     private FileWriter creationFileWriterXMLParJFileChooser() throws IOException {
     	FileWriter fileWriter = null;
     	
@@ -142,6 +154,12 @@ public class EnregistrementXML implements IEnregistrement {
     	return fileWriter;
     }
     
+    /**
+     * Enregistre les formes pour Enregistrer().
+     * @param p_Doc Le doc dans lequel l'enregistrement est en cours.
+     * @param p_EspaceAEnregistrer L'espace de travail enregistré.
+     * @throws XMLStreamException Si l'état du stream n'est pas approprié à l'écriture souhaité.
+     */
     private void enregistrementFormes(XMLStreamWriter p_Doc, IEspaceTravail p_EspaceAEnregistrer) throws XMLStreamException {
     	for(IForme forme: p_EspaceAEnregistrer) 
     	{
@@ -151,8 +169,12 @@ public class EnregistrementXML implements IEnregistrement {
     		Integer largeurForme          = forme.GetLargeur();
     		Integer epaisseurTrait        = forme.GetTrait();
     		Integer couleurRGBContour     = forme.GetCouleur().getRGB();
-    		Integer couleurRGBRemplissage = forme.GetRemplissage().getRGB();
+    		Integer couleurRGBRemplissage = null;
+    		if(forme.GetRemplissage() != null) {
+    			couleurRGBRemplissage = forme.GetRemplissage().getRGB();
+    		}
     		
+    			
     		
     		p_Doc.writeStartElement(ELM_FORME);
     		 
@@ -163,7 +185,13 @@ public class EnregistrementXML implements IEnregistrement {
         	p_Doc.writeAttribute( ATTR_HAUTEUR_FORME,       hauteurForme.toString()          );
         	p_Doc.writeAttribute( ATTR_EPAISSEUR_TRAIT,     epaisseurTrait.toString()        );
         	p_Doc.writeAttribute( ATTR_COULEUR_TRAIT,       couleurRGBContour.toString()     );
-        	p_Doc.writeAttribute( ATTR_COULEUR_REMPLISSAGE, couleurRGBRemplissage.toString() );
+        	
+        	if(couleurRGBRemplissage == null) {
+        		p_Doc.writeAttribute( ATTR_COULEUR_REMPLISSAGE, "NULL" );
+        	} 
+        	else {
+        		p_Doc.writeAttribute( ATTR_COULEUR_REMPLISSAGE, couleurRGBRemplissage.toString() );
+        	}
         	
         	p_Doc.writeEndElement();
     	}
@@ -171,6 +199,11 @@ public class EnregistrementXML implements IEnregistrement {
 
     
 	// CHARGEMENT
+    
+    /**
+     * Charge un espace de travail d'un fichier format xml.
+     * @param p_EspaceAEnregistrer l'espace de travail 
+     */
 	public void Charger(IEspaceTravail p_EspaceActuelEcrase) {	
 		XMLStreamReader doc = null;
 		
@@ -219,6 +252,11 @@ public class EnregistrementXML implements IEnregistrement {
 		}
 	}
 	
+	/**
+	 * Retourne un FileReader à l'aide d'un fichier choisi par JFileChooser.
+	 * @return Le FileReader
+	 * @throws FileNotFoundException Si le JFIleChooser est annulée ou le nom de fichier est d'un format inadéquat.
+	 */
 	private FileReader creationFileReaderXMLParJFileChooser() throws FileNotFoundException {
 		FileReader fileReader = null;
 		
@@ -238,6 +276,13 @@ public class EnregistrementXML implements IEnregistrement {
 		return fileReader;
 	}
 	
+	/**
+	 * S'occupe de redimensionner l'espace de travail avec les dimensions enregistrées dans le fichier.
+	 * @param p_Doc Le StreamReader du chargement en cours.
+	 * @param p_EspaceTravail L'espace de travail redimensionné.
+	 * @throws XMLStreamException S'il y a une erreur lors du processus de lecture du fichier.
+	 * @throws NumberFormatException Si la valeur des attributs dans le fichier chargé ne sont pas numérique où nécessaire.
+	 */
 	private void chargerDimensionEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws XMLStreamException, NumberFormatException 
 	{
 		Integer largeur = Integer.parseInt(p_Doc.getAttributeValue("", ATTR_LARGEUR_ESP));
@@ -247,7 +292,13 @@ public class EnregistrementXML implements IEnregistrement {
 		p_Doc.next();
 	}
 	
-
+	/**
+	 * S'occupe de charger les formes dans l'espace de travail pour un chargement en cours.
+	 * @param p_Doc Le StreamReader du chargement en cours.
+	 * @param p_EspaceTravail L'espace de travail devant contenir les formes.
+	 * @throws NumberFormatException Si la valeur des attributs dans le fichier chargé ne sont pas numérique où nécessaire.
+	 * @throws XMLStreamException S'il y a une erreur lors du processus de lecture du fichier.
+	 */
 	private void chargerFormesDansEspace(XMLStreamReader p_Doc, IEspaceTravail p_EspaceTravail) throws NumberFormatException, XMLStreamException { // Test par String, a changer pour ADD.
 		p_EspaceTravail.Vider();
 		
@@ -255,23 +306,26 @@ public class EnregistrementXML implements IEnregistrement {
         {
 			Forme formeAjoute = null;	
 			
-			System.out.println( p_Doc.getAttributeValue(null, ATTR_TYPE));
-			
 			String typeForme        =                  p_Doc.getAttributeValue(null, ATTR_TYPE)                  ;
 			Integer coorX           = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_COOR_X)				);
 			Integer coorY           = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_COOR_Y)				);
 			Integer hauteur         = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_HAUTEUR_FORME)		);
 			Integer largeur         = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_LARGEUR_FORME)		);
-			Integer trait           = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_EPAISSEUR_TRAIT)	);
+			Integer trait           = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_EPAISSEUR_TRAIT)   	);
 			Integer rgbCouleurTrait = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_COULEUR_TRAIT)		);
-			Integer rgbCouleurFond  = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_COULEUR_REMPLISSAGE));
-		
-			Color couleurTrait   = new Color(rgbCouleurTrait);
-			Color couleurFond    = new Color(rgbCouleurFond);
+			Color couleurTrait      = new Color(rgbCouleurTrait);
+			
+			Integer rgbCouleurFond  = null;
+			Color couleurFond       = null;
+			if(!p_Doc.getAttributeValue(null, ATTR_COULEUR_REMPLISSAGE).equals("NULL")) {
+				rgbCouleurFond      = Integer.parseInt(p_Doc.getAttributeValue(null, ATTR_COULEUR_REMPLISSAGE)  );
+				couleurFond         = new Color(rgbCouleurFond);
+				
+			}
 		
 			switch(typeForme) {
 				case "ligne":
-					//formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
+					formeAjoute = new Ligne(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 					break;
 				case "oval":  
 					formeAjoute = new Oval(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);

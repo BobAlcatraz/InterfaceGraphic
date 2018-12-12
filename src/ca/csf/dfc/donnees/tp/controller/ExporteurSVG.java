@@ -21,7 +21,7 @@ import ca.csf.dfc.donnees.tp.model.*;
 public class ExporteurSVG implements IExporteur{
 	static private ExporteurSVG m_Instance = null;
 	
-	private ExporteurSVG() {
+	private ExporteurSVG() { 
 		ExporteurSVG.m_Instance = this;
 	}
 	
@@ -116,12 +116,12 @@ public class ExporteurSVG implements IExporteur{
 	}
 
 	private void ecritureFormatSVGDeOvale(PrintWriter p_Doc, Oval p_Ovale) {
-		Integer cx = p_Ovale.GetX(); //test
+		Integer cx = p_Ovale.GetX(); 
 		Integer cy = p_Ovale.GetY();
 		Integer rx = p_Ovale.GetLargeur()/2;
 		Integer ry = p_Ovale.GetHauteur()/2;
 		//Style (couleurs rgb)
-		Integer fillRed     = p_Ovale.GetRemplissage() != null ? p_Ovale.GetRemplissage().getRed() : 0; // Ce serait pertinant d'avoir ces fonctions directement dans forme. (respect des regles)
+		Integer fillRed     = p_Ovale.GetRemplissage() != null ? p_Ovale.GetRemplissage().getRed() : 0; 
 		Integer fillGreen   = p_Ovale.GetRemplissage() != null ? p_Ovale.GetRemplissage().getGreen() : 0;
 		Integer fillBlue    = p_Ovale.GetRemplissage() != null ? p_Ovale.GetRemplissage().getBlue() : 0;
 		double fillOpacity = p_Ovale.GetRemplissage() != null ? 1.0 : 0.0;
@@ -132,7 +132,7 @@ public class ExporteurSVG implements IExporteur{
 		
 		p_Doc.println("	<ellipse cx=\""+ cx +"\" cy=\""+ cy +"\" rx=\""+ rx +"\" ry=\""+ ry +"\"\r"
 				    + " style=\"fill:rgb("+ fillRed +", "+ fillGreen +", "+ fillBlue+ ");"
-				    + " fill-opacity:" + fillOpacity + ";"
+				    	     + "fill-opacity:" + fillOpacity + ";"
 				    		 + "stroke:rgb("+ strokeRed +", "+ strokeGreen +", "+ strokeBlue +");"
 				    		 + "stroke-width:"+ strokeWidth +"\" />");
 	}
@@ -152,10 +152,9 @@ public class ExporteurSVG implements IExporteur{
 		Integer strokeBlue  = p_Rectangle.GetCouleur().getBlue();
 		Integer strokeWidth = p_Rectangle.GetTrait();
 		
-		
 		p_Doc.println("	<rect x=\""+ x +"\" y=\""+ y +"\" width=\""+ width +"\" height=\""+ height +"\" "
 			     + " style=\"fill:rgb("+ fillRed +", "+ fillGreen +", "+ fillBlue+ ");"
-			     + " fill-opacity:" + fillOpacity + ";"
+			     		  + "fill-opacity:" + fillOpacity + ";"
 	    		          + "stroke:rgb("+ strokeRed +", "+ strokeGreen +", "+ strokeBlue +");"
 	    		          + "stroke-width:"+ strokeWidth +"\" />");
 	}
@@ -172,8 +171,8 @@ public class ExporteurSVG implements IExporteur{
 		Integer strokeWidth = p_Ligne.GetTrait();
 		
 		p_Doc.println("	<line x1=\""+ x1 +"\" y1=\""+ y1 +"\" x2=\""+ x2 +"\" y2=\""+ y2 +"\" "
-				    + " style=\"stroke:rgb(\"+ strokeRed +\", \"+ strokeGreen +\", \"+ strokeBlue +\");" 
-				    +  "stroke-width:"+ strokeWidth +"\" />");
+				    + " style=\"stroke:rgb("+ strokeRed +", "+ strokeGreen +", "+ strokeBlue +");" 
+				            +  "stroke-width:"+ strokeWidth +"\" />");
 	}
 
 
