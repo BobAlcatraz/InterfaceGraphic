@@ -68,6 +68,9 @@ public class Dessin extends JFrame implements IDessin{
 	JSpinner spn_TailleTrait = new JSpinner(new SpinnerListModel(Arrays.asList(
 			1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30)));
 	
+	/*
+	 * Construit la fenêtre principale du programme
+	 */
 	public Dessin() {
 		////////////////////////
 		//Configurations de base
@@ -164,7 +167,6 @@ public class Dessin extends JFrame implements IDessin{
 		options.add(spn_TailleTrait);
 		top.add(options);
 		this.add(top, BorderLayout.NORTH);
-		//this.add(menu, BorderLayout.NORTH);
 		/////////////////
 		//Section Events
 		/////////////////
@@ -194,6 +196,11 @@ public class Dessin extends JFrame implements IDessin{
 		butt_Pointeur.doClick();
 	}
 	
+	/*
+	 * Permet de créer un nouvel espace de travail
+	 * @param	p_Largeur	Largeur du nouvel espace de travail
+	 * @param	p_Hauteur	Hauteur du nouvel espace de travail
+	 */
 	@Override
 	public void CreerEspaceTravail(int p_Largeur, int p_Hauteur) {
 		this.m_EspaceTravail.Vider();
@@ -205,11 +212,19 @@ public class Dessin extends JFrame implements IDessin{
 		this.m_Background.repaint();
 	}
 	
+	/*
+	 * Verifie si l'espace de travail courant est le même que l'espace de travail du
+	 * dernier enregistrement
+	 */
 	@Override
 	public boolean VerifierModification() {
 		return this.m_Observer.Comparer(this.m_EspaceTravail);
 	}
-
+	
+	/*
+	 * Fait une sauvegarde
+	 * 
+	 */
 	@Override
 	public boolean Sauvegarder() {
 		boolean confirm = true;
