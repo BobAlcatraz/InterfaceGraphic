@@ -18,6 +18,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 /**
+ * Fenêtre qui permet à un utilisateur d'entrer les dimensions d'un espace de travail.
  * @author JBrazeau
  *
  */
@@ -39,7 +40,7 @@ public class FenetreDimensionEspace extends JDialog {
 	private Integer m_largeurChoisie = null;
 	private Integer m_hauteurChoisie = null;
 	
-	public FenetreDimensionEspace(JFrame p_Parent) {
+	public FenetreDimensionEspace(JFrame p_Parent) { 
 		super(p_Parent, "Dimension d'espace", true);
 		
 		// Configuration des éléments graphiques
@@ -90,21 +91,39 @@ public class FenetreDimensionEspace extends JDialog {
 		
 	}
 	
-	// Retourne true si le dialogue résulte dans les mesures attendues
+	/**
+	 * Retourne un booléen définissant si le dialogue a résulté dans les mesures attendues
+	 * @return l'état du dialogue
+	 */
 	public boolean getResultatDialogue() {
 		return this.m_etatDialogue;
 	}
 	
+	/**
+	 * Retourne la hauteur choisie lors du dialogue.
+	 * @return La hauteur choisie.
+	 */
 	public Integer getHauteurChoisie() {
 		return this.m_hauteurChoisie;
 	}
 	
+	/**
+	 * Retourne la largeur choisie lors du dialogue.
+	 * @return La largeur choisie.
+	 */
 	public Integer getLargeurChoisie() {
 		return this.m_largeurChoisie;
 	}
 	
+	/**
+	 * Classe interne qui gère les actions du bouton Cancel.
+	 * @author JBrazeau
+	 */
 	public class GestCancel implements ActionListener {
-		
+		/**
+		 * Redéfinition
+		 * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
+		 */
 		@Override
 		public void actionPerformed(ActionEvent p_e) {
 			FenetreDimensionEspace.this.m_largeurChoisie = null;
@@ -115,8 +134,16 @@ public class FenetreDimensionEspace extends JDialog {
 		}
 	}
 	
+	/**
+	 * Classe interne qui gère les actions du bouton OK.
+	 * @author JBrazeau
+	 */
 	public class GestOK implements ActionListener {
 		
+		/**
+		 * Redéfinition
+		 * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
+		 */
 		@Override
 		public void actionPerformed(ActionEvent p_e) {
 			String messageErreur = null;
@@ -159,16 +186,31 @@ public class FenetreDimensionEspace extends JDialog {
 		}
 	}
 
+	/**
+	 * Classe interne qui sert à limiter le nombre de caractères d'un JTextField
+	 * @author JBrazeau
+	 *
+	 */
 	public class JTextFieldLimite extends PlainDocument {
 		private static final long serialVersionUID = 1L;  
+		/**
+		 * Nombre limite de caractères
+		 */
 		private int m_limite;
-
+		
+		/**
+		 * Initialise un JTextFieldLimite avec la limite.
+		 * @param p_limite La limite.
+		 */
 		JTextFieldLimite(int p_limite) 
 		{
 		   super();
 		   this.m_limite = p_limite;
 		}
-
+		
+		/**
+		 * Gère l'insertion des caractères pour qu'elle respecte la limite.
+		 */
 		 public void insertString( int p_offset, String  p_str, AttributeSet p_attr ) throws BadLocationException {
 		    if (p_str == null) return;
 

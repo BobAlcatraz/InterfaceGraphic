@@ -11,7 +11,7 @@ import javax.xml.stream.*;
 import ca.csf.dfc.donnees.tp.model.*;
 
 /**
- * Classe permettant l'enregistrement et le chargement d'un espace de travail sous format XML
+ * Classe gérant l'enregistrement et le chargement d'un espace de travail sous format XML
  * @author JBrazeau
  * 
  */
@@ -156,7 +156,7 @@ public class EnregistrementXML implements IEnregistrement {
     
     /**
      * Enregistre les formes pour Enregistrer().
-     * @param p_Doc Le doc dans lequel l'enregistrement est en cours.
+     * @param p_Doc Le StreamWriter de l'enregistrement en cours.
      * @param p_EspaceAEnregistrer L'espace de travail enregistré.
      * @throws XMLStreamException Si l'état du stream n'est pas approprié à l'écriture souhaité.
      */

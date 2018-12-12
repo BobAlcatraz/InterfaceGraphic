@@ -15,16 +15,25 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import ca.csf.dfc.donnees.tp.model.*;
 
 /**
+ * Classe qui gère l'exportation sous format SVG un espace de travail.
  * @author JBrazeau
  *
  */
 public class ExporteurSVG implements IExporteur{
 	static private ExporteurSVG m_Instance = null;
 	
+	/**
+     * Constructeur par défaut.
+     * Associe l'instance à m_Instance.
+     */
 	private ExporteurSVG() { 
 		ExporteurSVG.m_Instance = this;
 	}
 	
+	/**
+	 * Retourne l'instance existante ou nouvellement créée.
+     * @return l'instance
+	 */
 	static public ExporteurSVG getInstance() {
 		if(ExporteurSVG.m_Instance == null) {
 			new ExporteurSVG();
@@ -33,7 +42,12 @@ public class ExporteurSVG implements IExporteur{
 		return ExporteurSVG.m_Instance;
 	}
 	
-	// EXPORTAGE
+	// EXPORTATION
+	
+	/**
+	 * Exporte l'espace de travail dans un fichier format SVG.
+	 * @param p_EspaceTravail L'espace de travail.
+	 */
 	public void Exporter(IEspaceTravail p_EspaceTravail) 
 	{
 		PrintWriter doc = null;
@@ -69,6 +83,11 @@ public class ExporteurSVG implements IExporteur{
 		}
 	}
 	
+	/**
+     * Permet d'avoir un PrintWriter avec l'extension svg par l'entremise d'un JFileChooser
+     * @return Le PrintWriter
+     * @throws IOException Si le JFIleChooser est annulé ou le nom de fichier est d'un format inadéquat.
+     */
 	private PrintWriter creationPrintWriterSVGParJFileChooser() throws IOException 
 	{
 		PrintWriter fileWriter = null;
@@ -95,6 +114,11 @@ public class ExporteurSVG implements IExporteur{
     	return fileWriter;
 	}
 
+	/**
+	 * S'occupe de l'écriture des formes de l'espace de travail lors de l'exportation SVG. 
+	 * @param p_Doc Le PrintWriter de l'exportation en cours. 
+	 * @param p_EspaceTravail L'espace de travail exporté.
+	 */
 	private void ecritureFormatSVGDesFormes(PrintWriter p_Doc, IEspaceTravail p_EspaceTravail) {
 		
 		for(IForme forme: p_EspaceTravail) {
@@ -115,6 +139,11 @@ public class ExporteurSVG implements IExporteur{
 		}
 	}
 
+	/**
+	 * Écrit une forme de type Ovale dans le fichier SVG.
+	 * @param p_Doc Le PrintWriter de l'exportation en cours.
+	 * @param p_Ovale L'ovale exporté.
+	 */
 	private void ecritureFormatSVGDeOvale(PrintWriter p_Doc, Oval p_Ovale) {
 		Integer cx = p_Ovale.GetX(); 
 		Integer cy = p_Ovale.GetY();
@@ -137,6 +166,11 @@ public class ExporteurSVG implements IExporteur{
 				    		 + "stroke-width:"+ strokeWidth +"\" />");
 	}
 	
+	/**
+	 * Écrit une forme de type Rectangle dans le fichier SVG.
+	 * @param p_Doc Le PrintWriter de l'exportation en cours.
+	 * @param p_Rectangle Le rectangle exporté.
+	 */
 	private void ecritureFormatSVGDeRectangle(PrintWriter p_Doc, Rectangle p_Rectangle) {
 		Integer x      = p_Rectangle.GetX(); 
 		Integer y      = p_Rectangle.GetY();
@@ -159,6 +193,11 @@ public class ExporteurSVG implements IExporteur{
 	    		          + "stroke-width:"+ strokeWidth +"\" />");
 	}
 	
+	/**
+	 * Écrit une forme de type Ligne dans le fichier SVG.
+	 * @param @param p_Doc Le PrintWriter de l'exportation en cours.
+	 * @param p_Ligne La ligne exportée.
+	 */
 	private void ecritureFormatSVGDeLigne(PrintWriter p_Doc, IForme p_Ligne) {
 		Integer x1 = p_Ligne.GetX();
 		Integer y1 = p_Ligne.GetY();
