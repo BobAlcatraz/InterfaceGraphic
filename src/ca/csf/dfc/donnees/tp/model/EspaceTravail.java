@@ -81,9 +81,9 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		this.m_ListForme.clear();
 	}
 	/**
-	 * Définit la taille de L'EspaceDeTravail
-	  *@param p_x   la largeur
-	 * @param p_y la hauteur
+	 * vérifie si une forme est sélectionné et laffecte a m_selectionne
+	 * @param p_x coordonnée x
+	 * @param p_y coordonnée y
 	 */
 	@Override
 	public void verifierClick(int p_x, int p_y) {
@@ -100,13 +100,23 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		}
 		this.repaint();
 	}
-	
+	/**
+	 * vérifie si le point est sélectionné
+	 * @param p_x coordonnée x
+	 * @param p_y coordonnée y
+	 */
 	public boolean dansPointModif(int p_x, int p_y) {
 		boolean pointClick = this.m_point.isclicked(p_x, p_y);
 		return pointClick;
 	}
 	
-	
+	/**
+	 * modifie/deplace la forme sélectionné
+	 * @param p_x coordonnée x
+	 * @param p_y coordonnée y
+	 * @param p_largeur mesure de largeur 
+	 * @param p_hauteur mesure de hauteur
+	 */
 	public void Refresh(int p_x, int p_y, int p_largeur, int p_hauteur) {
 		if (this.m_selectionne != null) {
 			this.m_selectionne.Modifier(this.m_selectionne.GetLargeur() + p_largeur, this.m_selectionne.GetHauteur() + p_hauteur);
@@ -115,35 +125,51 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		}
 		this.repaint();
 	}
-	
+	/**
+	 * renvoie la hauteur de l'EspaceTravail
+	 * @return la largeur
+	 */
 	@Override
 	public int getLargeur() {
 	
 		return this.getPreferredSize().width;
 	}
-
+	/**
+	 * renvoie la largeur de l'EspaceTravail
+	 * @return la hauteur
+	 */
 	@Override
 	public int getHauteur() {
 		
 		return this.getPreferredSize().height;
 	}
-	
+	/**
+	 * vérifie si la forme n'est pas null
+	 * @return vrai si la forme n'est pas null
+	 */
 	@Override
 	public boolean hasSelection() {
 		return this.m_selectionne != null;
 	}
-	
+	/**
+	 * vérifie si la forme n'est pas null
+	 * @return vrai si la forme n'est pas null
+	 */
 	@Override
 	public boolean dansSelection(int p_x, int p_y) {
 		return this.m_selectionne.isclicked(p_x,p_y);
 	}
-	
+	/**
+	 * Ajoute une forme a la liste et appele la methode repaint
+	 */
 	@Override
 	public void draw(IForme p_forme) {
 		this.m_ListForme.add(p_forme);
 		this.repaint();
 	}
-	
+	/**
+	 * adapte la forme sélectionné pour 2dGraphics
+	 */
 	@Override
 	public void AdapterForme() {
 		if (this.m_selectionne.GetHauteur() < 0 && this.m_selectionne.GetForme() != "ligne") {
@@ -165,7 +191,11 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		this.m_point.Deplacer(this.m_selectionne.GetX() + this.m_selectionne.GetLargeur(), this.m_selectionne.GetY() + this.m_selectionne.GetHauteur());
 		this.repaint();
 	}
-	
+	/**
+	 * dessine les formes
+	 * qui sont dans la liste de forme
+	 * @param p_graph un Graphics
+	 */
 	@Override
 	protected void paintComponent(Graphics p_graph) {
 		Graphics2D graph = (Graphics2D)p_graph;
@@ -237,30 +267,42 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		}
 	}
 	
-	
+	/**
+	 * change la couleur du remplissage de la forme selectionné
+	 */
 	public void ChangerRemplissage(Color p_couleur) {
 		this.m_selectionne.ModifierRemplisage(p_couleur);
 	}
-	
+	/**
+	 * change la couleur de la forme selectionné
+	 */
 	public void ChangerCouleur(Color p_couleur) {
 		this.m_selectionne.ModifierCouleur(p_couleur);
 	}
-	
+	/**
+	 * change le trait de la forme selectionné
+	 */
 	public void ChangerTrait(int p_grosseur) {
 		this.m_selectionne.ModifierTrait(p_grosseur);
 	}
 
-
+	/**
+	 * ajoute un mouse motion listener
+	 */
 	@Override
 	public void ajouterMouseMotionListener(MouseMotionListener p_MML) {
 		this.addMouseMotionListener(p_MML);
 	}
-
+	/**
+	 * ajoute un mouse listener
+	 */
 	@Override
 	public void ajouterMouseListener(MouseListener p_ML) {
 		this.addMouseListener(p_ML);
 	}
-
+	/**
+	 * pour comparer les EspaceDeTravail les une avec les autres
+	 */
 	@Override
 	public int compareTo(IEspaceTravail o) {
 		int verif= 0;
@@ -273,7 +315,9 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		}
 		return verif;
 	}
-	
+	/**
+	 * vérifie si les EspaceDeTravail son identique 
+	 */
 	@Override
 	public boolean equals(Object p_ET) {
 		if (!(p_ET instanceof EspaceTravail) || this.compareTo((EspaceTravail)p_ET) != 0) {
@@ -283,7 +327,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 			return true;
 		}
 	}
-
+	
 	@Override
 	public Iterator<IForme> iterator() {
 		
@@ -316,7 +360,10 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		}
 		
 	}
-
+	/**
+	 * copie l'EspaceDeTravail
+	 *@return une copie de l'EspaceDeTravail
+	 */ 
 	@Override
 	public IEspaceTravail GetCopie() {
 		return new EspaceTravail(this);
