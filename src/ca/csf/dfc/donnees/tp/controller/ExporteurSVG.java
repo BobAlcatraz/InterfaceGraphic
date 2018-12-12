@@ -57,6 +57,10 @@ public class ExporteurSVG implements IExporteur{
 		{
 			System.err.println("Erreur d'écriture : " + exp);
 		}
+		catch(NullPointerException exp) 
+		{
+			System.err.println("Erreur, référence inexistante : " + exp);
+		}
 		finally
 		{
 			if(doc != null) {
