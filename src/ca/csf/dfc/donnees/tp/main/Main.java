@@ -1,20 +1,10 @@
-/**
- * 
- */
 package ca.csf.dfc.donnees.tp.main;
 
-/**
- * @author JBrazeau
- *
- */
+import ca.csf.dfc.donnees.tp.view.*;
+
 public class Main {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
+		new Dessin().setVisible(true);
+	} 
 }
