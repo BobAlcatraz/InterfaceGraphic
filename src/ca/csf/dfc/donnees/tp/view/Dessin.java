@@ -16,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -37,6 +38,11 @@ import javax.swing.text.AbstractDocument;
 import ca.csf.dfc.donnees.tp.controller.*;
 import ca.csf.dfc.donnees.tp.model.*;
 
+/**
+ * 
+ * @author administrateur
+ *
+ */
 public class Dessin extends JFrame implements IDessin{
 	private static final long serialVersionUID = 1L;
 	private IEspaceTravail m_EspaceTravail;
@@ -68,7 +74,7 @@ public class Dessin extends JFrame implements IDessin{
 	JSpinner spn_TailleTrait = new JSpinner(new SpinnerListModel(Arrays.asList(
 			1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30)));
 	
-	/*
+	/**
 	 * Construit la fenêtre principale du programme
 	 */
 	public Dessin() {
@@ -196,10 +202,8 @@ public class Dessin extends JFrame implements IDessin{
 		butt_Pointeur.doClick();
 	}
 	
-	/*
-	 * Permet de créer un nouvel espace de travail
-	 * @param	p_Largeur	Largeur du nouvel espace de travail
-	 * @param	p_Hauteur	Hauteur du nouvel espace de travail
+	/**
+	 * Voir la documentation de la classe parent
 	 */
 	@Override
 	public void CreerEspaceTravail(int p_Largeur, int p_Hauteur) {
@@ -212,18 +216,16 @@ public class Dessin extends JFrame implements IDessin{
 		this.m_Background.repaint();
 	}
 	
-	/*
-	 * Verifie si l'espace de travail courant est le même que l'espace de travail du
-	 * dernier enregistrement
+	/**
+	 * Voir la documentation de la classe parent
 	 */
 	@Override
 	public boolean VerifierModification() {
 		return this.m_Observer.Comparer(this.m_EspaceTravail);
 	}
 	
-	/*
-	 * Fait une sauvegarde
-	 * 
+	/**
+	 * Voir la documentation de la classe parent
 	 */
 	@Override
 	public boolean Sauvegarder() {
@@ -238,6 +240,9 @@ public class Dessin extends JFrame implements IDessin{
 		return confirm;
 	}
 
+	/**
+	 * Voir la documentation de la classe parent
+	 */
 	@Override
 	public boolean Charger() {
 		boolean confirm = true;
@@ -255,6 +260,9 @@ public class Dessin extends JFrame implements IDessin{
 		return confirm;
 	}
 
+	/**
+	 * Voir la documentation de la classe parent
+	 */
 	@Override
 	public boolean Exporter() {
 		boolean confirm = true;
@@ -267,16 +275,26 @@ public class Dessin extends JFrame implements IDessin{
 		return confirm;
 	}
 	
+	/**
+	 * Voir la documentation de la classe parent
+	 */
 	@Override
 	public void Supprimer() {
 		Dessin.this.m_EspaceTravail.supprimer();
 	}
 
+	/**
+	 * Voir la documentation de la classe parent
+	 */
 	@Override
 	public void AjouterForme(IForme p_Forme) {
 		this.m_EspaceTravail.draw(p_Forme);		
 	}
 	
+	/**
+	 * Prend les valeurs des TextField pour les insérer dans les paramètres de
+	 * couleurs du dessin
+	 */
 	public void UpdaterCouleurs() {
 		this.m_CouleurTrait = new Color(Integer.parseInt(this.txt_CR.getText()), Integer.parseInt(this.txt_CG.getText()), Integer.parseInt(this.txt_CB.getText()));
 		if (this.cb_RT.isSelected()) {
@@ -298,8 +316,14 @@ public class Dessin extends JFrame implements IDessin{
 	///////////////////////////////////////////////////////////////////////
 	//SECTION CLASSES PRIVÉES UTILITAIRES
 	///////////////////////////////////////////////////////////////////////
-	
+	/**
+	 * Classe observant les mouvements de la souris dans l'espace de travail
+	 */
 	private class Crayon implements MouseMotionListener{
+		/**
+		 * Passe les informations de mouvement de la souris pendant
+		 * que le bouton de clique est enfoncé à l'espace de travail
+		 */
 		@Override
 		public void mouseDragged(MouseEvent p_e) {
 			if (Dessin.this.m_EnDeplacement) {
@@ -318,10 +342,18 @@ public class Dessin extends JFrame implements IDessin{
 		
 	}
 	
+	/**
+	 * Classe observant les cliques de la souris dans l'espace de
+	 * travail
+	 */
 	private class Pointeur implements MouseListener{
 		@Override
 		public void mouseClicked(MouseEvent p_e) {}
 
+		/**
+		 * Informe l'espace de travail de l'action à prendre d'après
+		 * un clique de la souris selon l'outil sélectionné dans le dessin
+		 */
 		@Override
 		public void mousePressed(MouseEvent p_e) {
 			Dessin.this.m_CurrentX = p_e.getX();
@@ -382,6 +414,10 @@ public class Dessin extends JFrame implements IDessin{
 			}
 		}
 
+		/**
+		 * Passe à l'espace de travail la commande d'adapter les formes
+		 * pour respecter les normes de Graphics2D
+		 */
 		@Override
 		public void mouseReleased(MouseEvent p_e) {
 			if (Dessin.this.m_EnModification) {
@@ -396,7 +432,13 @@ public class Dessin extends JFrame implements IDessin{
 		public void mouseExited(MouseEvent p_e) {}
 	}
 	
+	/**
+	 * Classe de sélection d'outil pour le dessin
+	 */
 	private class Outils implements ActionListener{
+		/**
+		 * Permet de sélectionné le bon outil d'après le bouton activé
+		 */
 		@Override
 		public void actionPerformed(ActionEvent p_e) {
 			String outil = ((JComponent)p_e.getSource()).getName();
@@ -433,7 +475,14 @@ public class Dessin extends JFrame implements IDessin{
 		}
 	}
 	
+	/**
+	 * Classe gérant les création et chargement d'espace de travail
+	 */
 	private class Nouveau implements ActionListener{
+		/**
+		 * Verifie si l'on veux créer un nouvel espace de travail ou
+		 * en charger un
+		 */
 		@Override
 		public void actionPerformed(ActionEvent p_e) {
 			boolean creerNouveau = false;
@@ -452,39 +501,76 @@ public class Dessin extends JFrame implements IDessin{
 			}
 			if (creerNouveau) {
 				if (((JMenuItem)p_e.getSource()).getText() == "Nouveau") {
-					Dessin.this.CreerEspaceTravail(200, 200);
+					FenetreDimensionEspace dialog = new FenetreDimensionEspace(Dessin.this);
+					dialog.setVisible(true);
+					if (dialog.getResultatDialogue()) {
+						Dessin.this.CreerEspaceTravail(dialog.getLargeurChoisie(), dialog.getHauteurChoisie());
+					}	
 				}
 				else {
-					Dessin.this.Charger();
+					if(!Dessin.this.Charger()) {
+						JOptionPane.showMessageDialog(Dessin.this, "Le chargement a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		}
 	}
 	
+	/**
+	 * Classe gérant les appels de sauvegarde
+	 */
 	private class Sauvegarde implements ActionListener{
+		/**
+		 * Permet d'appeler la fonction de sauvegarde et informe
+		 * l'utilisateur si cette sauvegarde échoue
+		 */
 		@Override
 		public void actionPerformed(ActionEvent p_e) {
-			Dessin.this.Sauvegarder();			
+			if(!Dessin.this.Sauvegarder()) {
+				JOptionPane.showMessageDialog(Dessin.this, "La sauvegarde a échouée", "Erreur", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 	
+	/**
+	 * Classe gérant les appels d'exportation
+	 */
 	private class Exportation implements ActionListener{
+		/**
+		 * Permet d'appeler la fonction d'exportation et informe
+		 * l'utilisateur si cette exportation échoue
+		 */
 		@Override
 		public void actionPerformed(ActionEvent p_e) {
-			Dessin.this.Exporter();
+			if(!Dessin.this.Exporter()) {
+				JOptionPane.showMessageDialog(Dessin.this, "L'exportation a échouée", "Erreur", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 	
+	/**
+	 * Classe gérant les appels à la suppression
+	 */
 	private class Suppression implements ActionListener{
+		/**
+		 * Appelle la méthode de suppression
+		 */
 		@Override
 		public void actionPerformed(ActionEvent p_e) {
 			Dessin.this.Supprimer();
 		}
 	}
 	
+	/**
+	 * Classe gérant les entrées dans les champs de couleurs
+	 * du dessin
+	 */
 	private class TextFilter extends DocumentFilter{
 		private static final int MAX_LENGTH = 3;
 		
+		/**
+		 * Verifie que l'insertion ne dépassent pas 3 charactères
+		 */
 	    public void insertString(FilterBypass fb, int offs, String str, AttributeSet a) throws BadLocationException {
 	    	if ((fb.getDocument().getLength() + str.length()) <= MAX_LENGTH) {	
 	    		try {
@@ -499,6 +585,9 @@ public class Dessin extends JFrame implements IDessin{
 	    	}
 	    }
 
+	    /**
+		 * Verifie que les remplacements ne dépassent pas 3 charactères
+		 */
 	    public void replace(FilterBypass fb, int offs, int length, String str, AttributeSet a) throws BadLocationException {
 	        if ((fb.getDocument().getLength() + str.length() - length) <= MAX_LENGTH) {
 	        	try {
@@ -514,7 +603,14 @@ public class Dessin extends JFrame implements IDessin{
 	    }
 	}
 	
+	/**
+	 * Classe gérant les modification de la largeur des traits
+	 */
 	private class SpinnerGetter implements ChangeListener{
+		/**
+		 * Tient à jour les valeurs de largeur de trait et force
+		 * l'espace de travail à se redessiner
+		 */
 		@Override
 		public void stateChanged(ChangeEvent p_e) {
 			Dessin.this.m_Trait = (int)Dessin.this.spn_TailleTrait.getValue();
@@ -523,11 +619,16 @@ public class Dessin extends JFrame implements IDessin{
 		}
 	}
 	
+	/**
+	 * Classe gérant la transparence des formes du desssin
+	 */
 	private class Transparence implements ActionListener{
+		/**
+		 * Permet de garder la transparence à jour dans le dessin
+		 */
 		@Override
 		public void actionPerformed(ActionEvent p_e) {
 			Dessin.this.UpdaterCouleurs();
 		}
-		
 	}
 }

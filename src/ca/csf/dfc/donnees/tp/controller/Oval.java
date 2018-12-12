@@ -43,10 +43,8 @@ public class Oval extends Forme {
 		int demiL = this.m_Largeur / 2;
 		int centreX = this.m_X +demiL;
 		int centreY = this.m_Y +demiH;
-		
 
-		return ((int) Math.pow((p_X - centreX), 2) / (int) Math.pow(demiH, 2))
-				+ ((int) Math.pow((p_Y - centreY), 2)) / ((int) Math.pow(demiL, 2)) <= 1;
+		return ((Math.pow((p_X - centreX), 2) / Math.pow(demiL, 2)) + (Math.pow((p_Y - centreY), 2) / Math.pow(demiH, 2)) <= 1.0);
 	}
 
 	@Override
