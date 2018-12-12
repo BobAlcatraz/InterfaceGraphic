@@ -152,7 +152,6 @@ public class ExporteurSVG implements IExporteur{
 		Integer strokeBlue  = p_Rectangle.GetCouleur().getBlue();
 		Integer strokeWidth = p_Rectangle.GetTrait();
 		
-		
 		p_Doc.println("	<rect x=\""+ x +"\" y=\""+ y +"\" width=\""+ width +"\" height=\""+ height +"\" "
 			     + " style=\"fill:rgb("+ fillRed +", "+ fillGreen +", "+ fillBlue+ ");"
 			     + " fill-opacity:" + fillOpacity + ";"
@@ -172,7 +171,7 @@ public class ExporteurSVG implements IExporteur{
 		Integer strokeWidth = p_Ligne.GetTrait();
 		
 		p_Doc.println("	<line x1=\""+ x1 +"\" y1=\""+ y1 +"\" x2=\""+ x2 +"\" y2=\""+ y2 +"\" "
-				    + " style=\"stroke:rgb(\"+ strokeRed +\", \"+ strokeGreen +\", \"+ strokeBlue +\");" 
+				    + " style=\"stroke:rgb("+ strokeRed +", "+ strokeGreen +", "+ strokeBlue +");" 
 				    +  "stroke-width:"+ strokeWidth +"\" />");
 	}
 
