@@ -93,6 +93,10 @@ public class EnregistrementXML implements IEnregistrement {
             System.err.println("Erreur dans le XML : " + exp);
 
         }
+        catch (NullPointerException exp) 
+        {
+        	System.err.println("Erreur, référence inexistante : " + exp);
+        }
         finally
         {
             if (doc != null)
