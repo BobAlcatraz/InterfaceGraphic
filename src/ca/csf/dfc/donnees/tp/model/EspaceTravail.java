@@ -21,24 +21,37 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	private ArrayList<IForme> m_ListForme = new ArrayList<IForme>();
 	private IForme m_selectionne;
 	private IForme m_point;
-	
+	/**
+	 * Constructeur 
+	 * @param p_x   la largeur
+	 * @param p_y la hauteur
+	 */
 	public EspaceTravail(int p_x, int p_y) {
 		super(); 
 		this.setPreferredSize(new Dimension(p_x, p_y));
 	}
-	
+	/**
+	 * Constructeur copy un autre Espace
+	 * @param p_ES   un EspaceDeTravail
+	 */
 	public EspaceTravail(EspaceTravail p_ES) {
 		this.setPreferredSize(new Dimension(p_ES.getWidth(), p_ES.getHeight()));
 		for (IForme forme : p_ES) {
 			this.m_ListForme.add(forme.GetCopie());
 		}
 	}
-	
+	/**
+	 * Définit la taille de L'EspaceDeTravail
+	  *@param p_x   la largeur
+	 * @param p_y la hauteur
+	 */
 	@Override
 	public void setTaille(int p_x, int p_y) {
 		this.setPreferredSize(new Dimension(p_x, p_y));
 	}
-	
+	/**
+	 * Supprime une IForme de la liste
+	 */
 	@Override
 	public void supprimer() {
 		boolean enRecherche = true;
@@ -52,18 +65,26 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		this.m_point = null;
 		repaint();
 	}
-	
+	/**
+	 * Rend la IForme sélectionné a null et le point
+	 */
 	@Override
 	public void Deselectionner() {
 		this.m_selectionne = null;
 		this.m_point = null;
 	}
-	
+	/**
+	 * vide la liste de IForme
+	 */
 	@Override
 	public void Vider() {
 		this.m_ListForme.clear();
 	}
-
+	/**
+	 * Définit la taille de L'EspaceDeTravail
+	  *@param p_x   la largeur
+	 * @param p_y la hauteur
+	 */
 	@Override
 	public void verifierClick(int p_x, int p_y) {
 		this.m_selectionne = null;
