@@ -271,7 +271,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	 * change la couleur du remplissage de la forme selectionné
 	 */
 	public void ChangerRemplissage(Color p_couleur) {
-		this.m_selectionne.ModifierRemplisage(p_couleur);
+		this.m_selectionne.ModifierRemplissage(p_couleur);
 	}
 	/**
 	 * change la couleur de la forme selectionné
