@@ -153,13 +153,11 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		graph.fillRect(0, 0, this.getWidth(), this.getHeight());
 		for (IForme forme : this.m_ListForme) {
 			String sorteForme = forme.GetForme();
-			
-			
 			if(forme.GetRemplissage() != null) {
 				switch (sorteForme) {
 				case "rectangle":
-					graph.fillRect(forme.GetX(), forme.GetY(), forme.GetLargeur(), forme.GetHauteur());
 					graph.setColor(forme.GetRemplissage());
+					graph.fillRect(forme.GetX(), forme.GetY(), forme.GetLargeur(), forme.GetHauteur());
 					graph.setStroke(new BasicStroke( forme.GetTrait()));
 					break;
 				case "oval" :
@@ -170,7 +168,6 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 				}
 					
 			}
-
 			switch(sorteForme) {
 			case "rectangle" :
 				graph.setColor(forme.GetCouleur());
@@ -183,11 +180,9 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 				graph.drawOval(forme.GetX(),forme.GetY(), forme.GetLargeur(), forme.GetHauteur());
 				break;
 			case "ligne" :
-				int pointx2 = forme.GetX() + forme.GetLargeur();
-				int pointy2 = forme.GetY() + forme.GetHauteur();
 				graph.setColor(forme.GetCouleur());
 				graph.setStroke(new BasicStroke(forme.GetTrait()));
-				graph.drawLine(forme.GetX(), forme.GetY(), pointx2, pointy2);
+				graph.drawLine(forme.GetX(), forme.GetY(), forme.GetX() + forme.GetLargeur(), forme.GetY() + forme.GetHauteur());
 				break;
 				}
 			if(this.m_selectionne != null) {
@@ -209,14 +204,15 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 									graph.fillOval(this.m_point.GetX()+2, this.m_point.GetY()+2, this.m_point.GetLargeur(), this.m_point.GetHauteur());
 									break;
 								case "ligne" :
-									int pointx2 = forme.GetX() + forme.GetLargeur();
-									int pointy2 = forme.GetY() + forme.GetHauteur();
-									graph.drawLine(this.m_selectionne.GetX(), this.m_selectionne.GetY(), pointx2, pointy2);
+									int pointx2 = laForme.GetX() + laForme.GetLargeur();
+									int pointy2 = laForme.GetY() + laForme.GetHauteur();
+									graph.drawLine(laForme.GetX(), laForme.GetY(), pointx2, pointy2);
 									graph.setColor(this.m_point.GetRemplissage());
 									graph.fillOval(this.m_point.GetX(), this.m_point.GetY(), this.m_point.GetLargeur(), this.m_point.GetHauteur());
 									break;
 							}
 					}
+				
 		}
 	}
 	

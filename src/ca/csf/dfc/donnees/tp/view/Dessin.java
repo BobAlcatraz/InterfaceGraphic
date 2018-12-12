@@ -68,6 +68,9 @@ public class Dessin extends JFrame implements IDessin{
 	JSpinner spn_TailleTrait = new JSpinner(new SpinnerListModel(Arrays.asList(
 			1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30)));
 	
+	/*
+	 * Construit la fenêtre principale du programme
+	 */
 	public Dessin() {
 		////////////////////////
 		//Configurations de base
@@ -164,7 +167,6 @@ public class Dessin extends JFrame implements IDessin{
 		options.add(spn_TailleTrait);
 		top.add(options);
 		this.add(top, BorderLayout.NORTH);
-		//this.add(menu, BorderLayout.NORTH);
 		/////////////////
 		//Section Events
 		/////////////////
@@ -189,10 +191,16 @@ public class Dessin extends JFrame implements IDessin{
 		((AbstractDocument)txt_CG.getDocument()).setDocumentFilter(new TextFilter());
 		((AbstractDocument)txt_CB.getDocument()).setDocumentFilter(new TextFilter());
 		this.spn_TailleTrait.addChangeListener(new SpinnerGetter());
+		this.cb_RT.addActionListener(new Transparence());
 		//Fin
 		butt_Pointeur.doClick();
 	}
 	
+	/*
+	 * Permet de créer un nouvel espace de travail
+	 * @param	p_Largeur	Largeur du nouvel espace de travail
+	 * @param	p_Hauteur	Hauteur du nouvel espace de travail
+	 */
 	@Override
 	public void CreerEspaceTravail(int p_Largeur, int p_Hauteur) {
 		this.m_EspaceTravail.Vider();
@@ -204,11 +212,19 @@ public class Dessin extends JFrame implements IDessin{
 		this.m_Background.repaint();
 	}
 	
+	/*
+	 * Verifie si l'espace de travail courant est le même que l'espace de travail du
+	 * dernier enregistrement
+	 */
 	@Override
 	public boolean VerifierModification() {
 		return this.m_Observer.Comparer(this.m_EspaceTravail);
 	}
-
+	
+	/*
+	 * Fait une sauvegarde
+	 * 
+	 */
 	@Override
 	public boolean Sauvegarder() {
 		boolean confirm = true;
@@ -267,12 +283,15 @@ public class Dessin extends JFrame implements IDessin{
 			this.m_Remplissage = null;
 		}
 		else {
-			this.m_Remplissage = new Color(Integer.parseInt(this.txt_RR.getText()), Integer.parseInt(this.txt_RG.getText()), Integer.parseInt(this.txt_CB.getText()));
+			this.m_Remplissage = new Color(Integer.parseInt(this.txt_RR.getText()), Integer.parseInt(this.txt_RG.getText()), Integer.parseInt(this.txt_RB.getText()));
+			if (this.m_Remplissage == null) {
+			}
 		}
 		if (this.m_EspaceTravail.hasSelection()) {
 			this.m_EspaceTravail.ChangerRemplissage(this.m_Remplissage);
 			this.m_EspaceTravail.ChangerCouleur(this.m_CouleurTrait);
 		}
+		this.m_EspaceTravail.Refresh(0,0,0,0);
 	}
 	
 	
@@ -339,7 +358,8 @@ public class Dessin extends JFrame implements IDessin{
 				Dessin.this.AjouterForme(new Rectangle(p_e.getX(), p_e.getY(), 
 						Dessin.this.m_EspaceTravail.getHauteur()/10, 
 						Dessin.this.m_EspaceTravail.getLargeur()/5, 
-						Dessin.this.m_Trait, Dessin.this.m_CouleurTrait, 
+						Dessin.this.m_Trait, 
+						Dessin.this.m_CouleurTrait, 
 						Dessin.this.m_Remplissage));
 				break;
 			case("Oval"):
@@ -499,6 +519,15 @@ public class Dessin extends JFrame implements IDessin{
 		public void stateChanged(ChangeEvent p_e) {
 			Dessin.this.m_Trait = (int)Dessin.this.spn_TailleTrait.getValue();
 			Dessin.this.m_EspaceTravail.ChangerTrait(Dessin.this.m_Trait);
+			Dessin.this.m_EspaceTravail.Refresh(0,0,0,0);
 		}
+	}
+	
+	private class Transparence implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent p_e) {
+			Dessin.this.UpdaterCouleurs();
+		}
+		
 	}
 }
