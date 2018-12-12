@@ -200,6 +200,9 @@ public class EnregistrementXML implements IEnregistrement {
 		catch(NumberFormatException exp) {
 			System.err.println("Erreur lors du chargement d'un attribut en int:" + exp);
 		}
+		catch(NullPointerException exp) {
+			System.err.println("Erreur, référence inexistante : " + exp);
+		}
 		finally {
 			if (doc != null)
             {
@@ -284,7 +287,7 @@ public class EnregistrementXML implements IEnregistrement {
 
 			p_Doc.next(); 
 			p_Doc.next();
-	}
+        }
 		
 	}
 }
