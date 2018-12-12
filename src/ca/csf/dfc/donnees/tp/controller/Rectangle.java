@@ -92,6 +92,12 @@ public class Rectangle extends Forme {
 		return this.m_Remplissage;
 	}
 
+	
+	/**
+	 * Compare le rectangle à une autre forme afin de savoir si elle est pareille
+	 * ou différente à cette forme comparée.
+	 * @param IForme o Forme à comparer.
+	 */
 	@Override
 	public int compareTo(IForme o) {
 		
@@ -161,7 +167,7 @@ public class Rectangle extends Forme {
 	}
 
 	@Override
-	public void ModifierRemplisage(Color p_couleur) {
+	public void ModifierRemplissage(Color p_couleur) {
 		this.m_Remplissage = p_couleur;
 		
 	}

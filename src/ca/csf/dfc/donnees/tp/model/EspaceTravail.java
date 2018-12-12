@@ -38,7 +38,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	public void setTaille(int p_x, int p_y) {
 		this.setPreferredSize(new Dimension(p_x, p_y));
 	}
-
+	
 	@Override
 	public void supprimer() {
 		boolean enRecherche = true;
