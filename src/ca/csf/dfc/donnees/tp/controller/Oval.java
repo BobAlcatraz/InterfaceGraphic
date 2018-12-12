@@ -183,7 +183,7 @@ public class Oval extends Forme {
 	}
 
 	@Override
-	public void ModifierRemplisage(Color p_couleur) {
+	public void ModifierRemplissage(Color p_couleur) {
 		this.m_Remplissage = p_couleur;
 		
 	}
@@ -192,5 +192,6 @@ public class Oval extends Forme {
 	public IForme GetCopie() {
 		return new Oval(this);
 	}
+
 
 }

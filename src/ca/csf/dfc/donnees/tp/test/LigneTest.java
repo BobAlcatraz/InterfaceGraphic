@@ -11,6 +11,8 @@ import ca.csf.dfc.donnees.tp.controller.Rectangle;
 
 class LigneTest {
 
+	
+	
 	@Test
 	void testGetSetX() {
 		Ligne test = new Ligne(1, 1, 1, 1, 1, null, null);	
@@ -77,9 +79,9 @@ class LigneTest {
 		Ligne test = new Ligne(1, 1, 1, 1, 1, null, null);
 		
 		assertEquals(test.GetRemplissage(), null);
-		test.ModifierRemplisage(Color.BLACK);
+		test.ModifierRemplissage(Color.BLACK);
 		assertEquals(test.GetRemplissage(), Color.BLACK);
-		test.ModifierRemplisage(Color.WHITE);
+		test.ModifierRemplissage(Color.WHITE);
 		assertEquals(test.GetRemplissage(), Color.WHITE);
 	}
 
@@ -99,7 +101,7 @@ class LigneTest {
 	}
 
 	@Test
-	void testIsclickedHauteurPos() {
+	void testIsclickedHauteurPositive() {
 		Ligne test = new Ligne(10, 92, 24, 30, 2, null, null);	
 		
 		assertTrue(test.isclicked(15, 88));
@@ -113,7 +115,7 @@ class LigneTest {
 	}
 	
 	@Test
-	void testIsclickedHauteurNeg() {
+	void testIsclickedHauteurNegative() {
 		Ligne test = new Ligne(4, 16, -12, 8, 2, null, null);	
 		
 		assertTrue(test.isclicked(6, 19));
