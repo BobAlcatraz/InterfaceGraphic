@@ -38,7 +38,7 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 	public void setTaille(int p_x, int p_y) {
 		this.setPreferredSize(new Dimension(p_x, p_y));
 	}
-
+	
 	@Override
 	public void supprimer() {
 		boolean enRecherche = true;
@@ -154,7 +154,23 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 		for (IForme forme : this.m_ListForme) {
 			String sorteForme = forme.GetForme();
 			
-			if(forme.GetRemplissage() == null) {
+			
+			if(forme.GetRemplissage() != null) {
+				switch (sorteForme) {
+				case "rectangle":
+					graph.fillRect(forme.GetX(), forme.GetY(), forme.GetLargeur(), forme.GetHauteur());
+					graph.setColor(forme.GetRemplissage());
+					graph.setStroke(new BasicStroke( forme.GetTrait()));
+					break;
+				case "oval" :
+					graph.fillOval(forme.GetX(), forme.GetY(), forme.GetLargeur(), forme.GetHauteur());
+					graph.setColor(forme.GetRemplissage());
+					graph.setStroke(new BasicStroke(forme.GetTrait()));
+					break;
+				}
+					
+			}
+
 			switch(sorteForme) {
 			case "rectangle" :
 				graph.setColor(forme.GetCouleur());
@@ -176,49 +192,45 @@ public class EspaceTravail extends JPanel implements IEspaceTravail  {
 				}
 			if(this.m_selectionne != null) {
 				IForme laForme = this.m_selectionne;
-				float[] dashPattern = { 20, 10, 10, 10 };
-				graph.setStroke(new BasicStroke(2, BasicStroke.CAP_BUTT,
-		                 BasicStroke.JOIN_MITER, 10,
-		                 dashPattern, 0));
-				graph.setColor(Color.red);
-				switch(laForme.GetForme()) {
-					case "rectangle" :
-						graph.drawRect(laForme.GetX()-2, laForme.GetY()-2, laForme.GetLargeur()+5, laForme.GetHauteur()+5);
-						graph.setColor(this.m_point.GetRemplissage());
-						graph.fillOval(this.m_point.GetX(), this.m_point.GetY(), this.m_point.GetLargeur(), this.m_point.GetHauteur());
-						break;
-					case "oval" :
-						graph.drawRect(laForme.GetX()-2, laForme.GetY()-2, laForme.GetLargeur()+5, laForme.GetHauteur()+5);
-						graph.setColor(this.m_point.GetRemplissage());
-						graph.fillOval(this.m_point.GetX()+2, this.m_point.GetY()+2, this.m_point.GetLargeur(), this.m_point.GetHauteur());
-						break;
-					case "ligne" :
-						int pointx2 = forme.GetX() + forme.GetLargeur();
-						int pointy2 = forme.GetY() + forme.GetHauteur();
-						graph.drawLine(this.m_selectionne.GetX(), this.m_selectionne.GetY(), pointx2, pointy2);
-						graph.setColor(this.m_point.GetRemplissage());
-						graph.fillOval(this.m_point.GetX(), this.m_point.GetY(), this.m_point.GetLargeur(), this.m_point.GetHauteur());
-						break;
+							float[] dashPattern = { 20, 10, 10, 10 };
+							graph.setStroke(new BasicStroke(2, BasicStroke.CAP_BUTT,
+					                 BasicStroke.JOIN_MITER, 10,
+					                 dashPattern, 0));
+							graph.setColor(Color.red);
+							switch(laForme.GetForme()) {
+								case "rectangle" :
+									graph.drawRect(laForme.GetX()-2, laForme.GetY()-2, laForme.GetLargeur()+5, laForme.GetHauteur()+5);
+									graph.setColor(this.m_point.GetRemplissage());
+									graph.fillOval(this.m_point.GetX(), this.m_point.GetY(), this.m_point.GetLargeur(), this.m_point.GetHauteur());
+									break;
+								case "oval" :
+									graph.drawRect(laForme.GetX()-2, laForme.GetY()-2, laForme.GetLargeur()+5, laForme.GetHauteur()+5);
+									graph.setColor(this.m_point.GetRemplissage());
+									graph.fillOval(this.m_point.GetX()+2, this.m_point.GetY()+2, this.m_point.GetLargeur(), this.m_point.GetHauteur());
+									break;
+								case "ligne" :
+									int pointx2 = forme.GetX() + forme.GetLargeur();
+									int pointy2 = forme.GetY() + forme.GetHauteur();
+									graph.drawLine(this.m_selectionne.GetX(), this.m_selectionne.GetY(), pointx2, pointy2);
+									graph.setColor(this.m_point.GetRemplissage());
+									graph.fillOval(this.m_point.GetX(), this.m_point.GetY(), this.m_point.GetLargeur(), this.m_point.GetHauteur());
+									break;
+							}
 					}
-				}
-			}
-			else {
-				switch (sorteForme) {
-				case "rectangle":
-					graph.fillRect(forme.GetX(), forme.GetY(), forme.GetLargeur(), forme.GetHauteur());
-					graph.setColor(forme.GetRemplissage());
-					graph.setStroke(new BasicStroke( forme.GetTrait()));
-					break;
-				case "oval" :
-					
-					break;
-				case "ligne" :
-					
-					break;
-				}
-				
-			}
 		}
+	}
+	
+	
+	public void ChangerRemplissage(Color p_couleur) {
+		this.m_selectionne.ModifierRemplisage(p_couleur);
+	}
+	
+	public void ChangerCouleur(Color p_couleur) {
+		this.m_selectionne.ModifierCouleur(p_couleur);
+	}
+	
+	public void ChangerTrait(int p_grosseur) {
+		this.m_selectionne.ModifierTrait(p_grosseur);
 	}
 
 

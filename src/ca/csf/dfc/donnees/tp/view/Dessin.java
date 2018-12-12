@@ -269,6 +269,10 @@ public class Dessin extends JFrame implements IDessin{
 		else {
 			this.m_Remplissage = new Color(Integer.parseInt(this.txt_RR.getText()), Integer.parseInt(this.txt_RG.getText()), Integer.parseInt(this.txt_CB.getText()));
 		}
+		if (this.m_EspaceTravail.hasSelection()) {
+			this.m_EspaceTravail.ChangerRemplissage(this.m_Remplissage);
+			this.m_EspaceTravail.ChangerCouleur(this.m_CouleurTrait);
+		}
 	}
 	
 	
@@ -494,6 +498,7 @@ public class Dessin extends JFrame implements IDessin{
 		@Override
 		public void stateChanged(ChangeEvent p_e) {
 			Dessin.this.m_Trait = (int)Dessin.this.spn_TailleTrait.getValue();
+			Dessin.this.m_EspaceTravail.ChangerTrait(Dessin.this.m_Trait);
 		}
 	}
 }
