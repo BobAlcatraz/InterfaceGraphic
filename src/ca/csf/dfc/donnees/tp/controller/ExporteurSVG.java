@@ -132,7 +132,7 @@ public class ExporteurSVG implements IExporteur{
 		
 		p_Doc.println("	<ellipse cx=\""+ cx +"\" cy=\""+ cy +"\" rx=\""+ rx +"\" ry=\""+ ry +"\"\r"
 				    + " style=\"fill:rgb("+ fillRed +", "+ fillGreen +", "+ fillBlue+ ");"
-				    + " fill-opacity:" + fillOpacity + ";"
+				    	     + "fill-opacity:" + fillOpacity + ";"
 				    		 + "stroke:rgb("+ strokeRed +", "+ strokeGreen +", "+ strokeBlue +");"
 				    		 + "stroke-width:"+ strokeWidth +"\" />");
 	}
@@ -154,7 +154,7 @@ public class ExporteurSVG implements IExporteur{
 		
 		p_Doc.println("	<rect x=\""+ x +"\" y=\""+ y +"\" width=\""+ width +"\" height=\""+ height +"\" "
 			     + " style=\"fill:rgb("+ fillRed +", "+ fillGreen +", "+ fillBlue+ ");"
-			     + " fill-opacity:" + fillOpacity + ";"
+			     		  + "fill-opacity:" + fillOpacity + ";"
 	    		          + "stroke:rgb("+ strokeRed +", "+ strokeGreen +", "+ strokeBlue +");"
 	    		          + "stroke-width:"+ strokeWidth +"\" />");
 	}
@@ -172,7 +172,7 @@ public class ExporteurSVG implements IExporteur{
 		
 		p_Doc.println("	<line x1=\""+ x1 +"\" y1=\""+ y1 +"\" x2=\""+ x2 +"\" y2=\""+ y2 +"\" "
 				    + " style=\"stroke:rgb("+ strokeRed +", "+ strokeGreen +", "+ strokeBlue +");" 
-				    +  "stroke-width:"+ strokeWidth +"\" />");
+				            +  "stroke-width:"+ strokeWidth +"\" />");
 	}
 
 
