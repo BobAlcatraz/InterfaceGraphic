@@ -29,11 +29,11 @@ public class Ligne extends Forme{
 	
 	@Override
 	public Boolean isclicked(int p_X, int p_Y) {
-		
+				
 		int x1 = this.m_X;
 		int y1 = this.m_Y;
 		int x2 = (x1 + this.m_Largeur);
-		int y2 = (y1 - this.m_Hauteur);
+		int y2 = (y1 + this.m_Hauteur);
 			
 		Boolean retour = false;		
 		
@@ -56,24 +56,21 @@ public class Ligne extends Forme{
 			}
 						
 		}
-		else if ((this.m_Hauteur > 0) && ((p_X >= x1)&&(p_X <= x2))&&((p_Y >= y2)&&(p_Y <= y1))) {
+		else if ((this.m_Hauteur > 0) && ((p_X >= x1)&&(p_X <= x2))&&((p_Y <= y2)&&(p_Y >= y1))) {
 			
-			if((p_Y >= ((a * p_X + b) - 20)) && (p_Y <= ((a * p_X + b) + 20))) {
+			if((p_Y >= ((a * p_X + b) - 70)) && (p_Y <= ((a * p_X + b) + 70))) {
 				retour = true;
 			}
 			
 		}
-		else if ((this.m_Hauteur < 0) && ((p_X >= x1)&&(p_X <= x2))&&((p_Y <= y2)&&(p_Y >= y1))) {
+		else if ((this.m_Hauteur < 0) && ((p_X >= x1)&&(p_X <= x2))&&((p_Y >= y2)&&(p_Y <= y1))) {
 			
-			if((p_Y >= ((a * p_X + b) - 20)) && (p_Y <= ((a * p_X + b) + 20))) {
+			if((p_Y >= ((a * p_X + b) - 70)) && (p_Y <= ((a * p_X + b) + 70))) {
 				retour = true;
 			}
 			
 		}
-				
-		
-		
-
+			
 		return retour;
 		
 	}
