@@ -57,7 +57,7 @@ public class EnregistrementXML implements IEnregistrement {
     }
     
 	// ENREGISTREMENT
-    
+
     /**
      * Enregistre un espace de travail dans un fichier format xml.
      * @param p_EspaceAEnregistrer l'espace de travail 
