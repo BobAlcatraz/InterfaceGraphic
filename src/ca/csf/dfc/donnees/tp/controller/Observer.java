@@ -6,7 +6,8 @@ public class Observer implements IObserver{
 	private IEspaceTravail m_Enregistrement;
 	
 	/**
-	 * Voir la documentation de la classe parent
+	 *Redéfinition
+	 * @see ca.csf.dfc.donnees.tp.controller.IDessin#Comparer(IEspaceTravail p_EspaceTravail)
 	 */
 	@Override
 	public boolean Comparer(IEspaceTravail p_EspaceTravail) {
@@ -14,7 +15,8 @@ public class Observer implements IObserver{
 	}
 
 	/**
-	 * Voir la documentation de la classe parent
+	 *Redéfinition
+	 * @see ca.csf.dfc.donnees.tp.controller.IDessin#SetEnregistrement(IEspaceTravail p_EspaceTravail) 
 	 */
 	@Override
 	public void SetEnregistrement(IEspaceTravail p_EspaceTravail) {
