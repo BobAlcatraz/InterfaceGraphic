@@ -57,7 +57,7 @@ public class EnregistrementXML implements IEnregistrement {
     }
     
 	// ENREGISTREMENT
-    
+
     /**
      * Enregistre un espace de travail dans un fichier format xml.
      * @param p_EspaceAEnregistrer l'espace de travail 
@@ -330,7 +330,7 @@ public class EnregistrementXML implements IEnregistrement {
 				case "oval":  
 					formeAjoute = new Oval(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 					break;
-				case "Rectangle":
+				case "rectangle":
 					formeAjoute = new Rectangle(coorX, coorY, hauteur, largeur, trait, couleurTrait, couleurFond);
 			}
 			
