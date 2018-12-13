@@ -203,7 +203,8 @@ public class Dessin extends JFrame implements IDessin{
 	}
 	
 	/**
-	 * Voir la documentation de la classe parent
+	 *Redéfinition
+	 * @see ca.csf.dfc.donnees.tp.view.IDessin#CreerEspaceTravail(int p_Largeur, int p_Hauteur)
 	 */
 	@Override
 	public void CreerEspaceTravail(int p_Largeur, int p_Hauteur) {
@@ -217,7 +218,8 @@ public class Dessin extends JFrame implements IDessin{
 	}
 	
 	/**
-	 * Voir la documentation de la classe parent
+	 *Redéfinition
+	 * @see ca.csf.dfc.donnees.tp.view.IDessin#VerifierModification()
 	 */
 	@Override
 	public boolean VerifierModification() {
@@ -225,7 +227,8 @@ public class Dessin extends JFrame implements IDessin{
 	}
 	
 	/**
-	 * Voir la documentation de la classe parent
+	 *Redéfinition
+	 * @see ca.csf.dfc.donnees.tp.view.IDessin#Sauvegarder()
 	 */
 	@Override
 	public boolean Sauvegarder() {
@@ -247,8 +250,8 @@ public class Dessin extends JFrame implements IDessin{
 	public boolean Charger() {
 		boolean confirm = true;
 		try {
-			this.m_Enregistrement.Charger(this.m_EspaceTravail);
 			this.m_EspaceTravail.Deselectionner();
+			this.m_Enregistrement.Charger(this.m_EspaceTravail);
 			this.setSize(this.m_EspaceTravail.getLargeur() + 210, this.m_EspaceTravail.getHauteur() + 100);
 			this.repaint();
 			this.m_Background.repaint();
